@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import admin from "../models/adminModel";
+import bcrypt from "bcryptjs";
 
 let URI:string;
 
@@ -30,12 +31,16 @@ export async function connectToDatabse (){
 
 
 async function defaultAdminCreation(){
-    const existingAdmin = await admin.findOne({email:"admin@gmail.com"})
+    const existingAdmin = await admin.findOne({email:process.env.ADMIN_EMAIL})
+    const password = process.env.ADMIN_PASS;
+    console.log(password)
+
+    const hashedPassword = await bcrypt.hash(password!,10);
 
     if(!existingAdmin){
         const defaultAdmin = new admin({
-            email:"admin@gmail.com",
-            password:"admin123",
+            email:process.env.ADMIN_EMAIL,
+            password:hashedPassword,
         })
         await defaultAdmin.save();
     }
