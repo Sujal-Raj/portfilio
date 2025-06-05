@@ -33,7 +33,7 @@ export async function connectToDatabse (){
 async function defaultAdminCreation(){
     const existingAdmin = await admin.findOne({email:process.env.ADMIN_EMAIL})
     const password = process.env.ADMIN_PASS;
-    console.log(password)
+    // console.log(password)
 
     const hashedPassword = await bcrypt.hash(password!,10);
 

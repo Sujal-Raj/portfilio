@@ -1,14 +1,17 @@
-import gallery from "@/app/models/galleryModel";
+// import gallery from "@/app/models/galleryModel";
+import { connectToDatabse } from "@/app/dbConfig/dbconfig";
+import Gallery from "@/app/models/galleryModel";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req:NextRequest){
     try {
+        await connectToDatabse();
         const body = await req.json();
     // console.log(body);
     const {title,description,catogery,imageURL} = body;
 
-    const newImage = new gallery({
+    const newImage = new Gallery({
         title,
         description,
         catogery,

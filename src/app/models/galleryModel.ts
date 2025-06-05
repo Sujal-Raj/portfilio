@@ -16,10 +16,10 @@ const gallerySchema = new mongoose.Schema({
     },
     imageURL:{
         type:String,
-        require:true
+        required:true
     }
 })
 
-const gallery =  mongoose.models.Gallery ||mongoose.model("Gallery",gallerySchema,"Gallery")
+const Gallery =  mongoose.models.Gallery ||mongoose.model("Gallery",gallerySchema,"Gallery")
 
-export default gallery;
+export default Gallery;
