@@ -1,34 +1,58 @@
-// import gallery from "@/app/models/galleryModel";
 import { connectToDatabse } from "@/app/dbConfig/dbconfig";
+import cloudinary from "@/app/lib/config";
 import Gallery from "@/app/models/galleryModel";
-import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req:NextRequest){
+export async  function POST(req:NextRequest){
     try {
         await connectToDatabse();
-        const body = await req.json();
-    // console.log(body);
-    const {title,description,catogery,imageURL} = body;
 
-    const newImage = new Gallery({
-        title,
-        description,
-        catogery,
-        imageURL
-    })
+    const formData = await req.formData(); 
 
-    await newImage.save();
+  const title = formData.get("title");
+  const description = formData.get("description");
+  const catogery = formData.get("catogery");
+  const file = formData.get("file"); 
 
+  console.log({
+    title,
+    description,
+    catogery,
+    file, 
+  });
 
+  let imageUrl = "";
+  if (file && typeof file === "object" && "arrayBuffer" in file) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const base64 = buffer.toString("base64");
+    const dataUri = `data:${file.type};base64,${base64}`;
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: "gallery",
+      resource_type: "auto",
+    });
+    imageUrl = result.secure_url;
+  } else {
     return NextResponse.json({
-        message:"gallery posted"
-    })
-        
+      message: "No file uploaded or file type is invalid",
+    }, { status: 400 });
+  }
+
+  const newImage = new Gallery({
+    title,
+    description,
+    catogery,
+    imageURL: imageUrl,
+  })
+  await newImage.save();
+
+  return NextResponse.json({
+    message:"Consoled"
+
+  })
     } catch (error:unknown) {
+        console.log(error)
         return NextResponse.json({
-            message:"error sending image",
-            error
+            message:"Error submitting Form"
         })
     }
 }
