@@ -14,12 +14,12 @@ export async  function POST(req:NextRequest){
   const catogery = formData.get("catogery");
   const file = formData.get("file"); 
 
-  console.log({
-    title,
-    description,
-    catogery,
-    file, 
-  });
+  // console.log({
+  //   title,
+  //   description,
+  //   catogery,
+  //   file, 
+  // });
 
   let imageUrl = "";
   if (file && typeof file === "object" && "arrayBuffer" in file) {
@@ -46,9 +46,10 @@ export async  function POST(req:NextRequest){
   await newImage.save();
 
   return NextResponse.json({
-    message:"Consoled"
+  message: "Gallery item uploaded successfully",
+  data: newImage,
+}, { status: 201 });
 
-  })
     } catch (error:unknown) {
         console.log(error)
         return NextResponse.json({
