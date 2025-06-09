@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+
+import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
 import { 
   ChevronRight, 
   Sparkles, 
@@ -22,11 +24,24 @@ import {
   Eye,
   ExternalLink
 } from 'lucide-react';
+import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
+ const words = [
+    {
+      text: "Bring",
+    },
+    {
+      text: "Ideas",
+    },
+    {
+      text: "to Life",
+       className: "text-yellow-400 dark:text-yellow-400",
+    },
+   
+  ];
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -240,7 +255,8 @@ const Portfolio = () => {
               </motion.div>
 
               <motion.div variants={itemVariants} className="space-y-4">
-                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+                  <TypewriterEffectSmooth words={words} />
+                {/* <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
                   Bringing
                   <span className="relative inline-block mx-4">
                     <span className="text-yellow-400">Ideas</span>
@@ -252,7 +268,7 @@ const Portfolio = () => {
                     />
                   </span>
                   to Life
-                </h1>
+                </h1> */}
                 <div className="flex items-center space-x-4 text-lg">
                   <motion.div
                     className="w-12 h-0.5 bg-yellow-400"
@@ -490,48 +506,57 @@ const Portfolio = () => {
 
           {/* Projects Grid */}
           <motion.div 
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-            layout
+      className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+      layout
+    >
+      {filteredProjects.map((project, index) => (
+        <CardContainer key={project.id} className="group/card">
+          <CardBody
+            className="relative bg-gray-900 rounded-2xl overflow-hidden border border-white/10 p-4"
           >
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                className="group relative bg-gray-900 rounded-2xl overflow-hidden cursor-pointer"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05 }}
-                layout
+            <motion.div
+              className="aspect-[4/3] bg-gradient-to-br from-yellow-400 to-yellow-600 relative overflow-hidden rounded-xl"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.05 }}
+              layout
+            >
+              <div className="absolute inset-0 bg-black bg-opacity-20 group-hover/card:bg-opacity-40 transition-all duration-300"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-black text-center">
+                  <Eye className="w-12 h-12 mx-auto mb-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+                  <p className="font-medium opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                    View Project
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="p-4">
+              <CardItem
+                translateZ="50"
+                className="text-xl font-bold mb-2 text-white group-hover/card:text-yellow-400 transition-colors duration-300"
               >
-                <div className="aspect-[4/3] bg-gradient-to-br from-yellow-400 to-yellow-600 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 transition-all duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-black text-center">
-                      <Eye className="w-12 h-12 mx-auto mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <p className="font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">View Project</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-yellow-400 transition-colors duration-300">
-                    {project.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span 
-                        key={tag}
-                        className="px-3 py-1 bg-yellow-400 bg-opacity-20 text-gray-600 text-sm rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                {project.title}
+              </CardItem>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {project.tags.map((tag) => (
+                  <CardItem
+                    key={tag}
+                    translateZ="20"
+                    className="px-3 py-1 bg-yellow-400 bg-opacity-20 text-yellow-400 text-sm rounded-full"
+                     >
+                    {tag}
+                  </CardItem>
+                ))}
+              </div>
+            </div>
+          </CardBody>
+        </CardContainer>
+      ))}
+    </motion.div>
         </div>
       </AnimatedSection>
 
