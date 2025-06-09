@@ -1,41 +1,76 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import axios from 'axios';
 
-type GalleryItem = {
+// Define interfaces for the data structure
+interface GalleryItem {
   _id: string;
-  imageURL: string;
   title: string;
   description: string;
   catogery: string;
-  // add any other fields your gallery items have
+  imageURL: string;
+}
+
+interface GalleryItemWithPosition extends GalleryItem {
+  position: number;
+}
+
+// Define animation variants type
+const cardVariants: Variants = {
+  left: {
+    scale: 0.95,
+    opacity: 0.75,
+    x: 0,
+    zIndex: 10,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  },
+  center: {
+    scale: 1.1,
+    opacity: 1,
+    x: 0,
+    zIndex: 20,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  },
+  right: {
+    scale: 0.95,
+    opacity: 0.75,
+    x: 0,
+    zIndex: 10,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  }
 };
 
-const GallerySection = () => {
+const GallerySection: React.FC = () => {
   const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    const fetchGallery = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get<{ gallery: GalleryItem[] }>('/api/gallery');
+        setGalleryData(response.data.gallery);
+      } catch (error) {
+        console.error("Error fetching gallery:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-useEffect(() => {
-  const fetchGallery = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get('/api/gallery');
-      setGalleryData(response.data.gallery);
-    } catch (error) {
-      console.error("Error fetching gallery:", error);
-    //   setGalleryData(mockGalleryData); // optional fallback
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  fetchGallery();
-}, []);
-
+    fetchGallery();
+  }, []);
 
   useEffect(() => {
     if (galleryData.length > 0) {
@@ -43,16 +78,16 @@ useEffect(() => {
         setCurrentIndex((prevIndex) => 
           prevIndex === galleryData.length - 1 ? 0 : prevIndex + 1
         );
-      }, 4000); // Change slide every 4 seconds
+      }, 4000);
 
       return () => clearInterval(interval);
     }
   }, [galleryData]);
 
-  const getVisibleCards = () => {
+  const getVisibleCards = (): GalleryItemWithPosition[] => {
     if (galleryData.length === 0) return [];
     
-    const cards = [];
+    const cards: GalleryItemWithPosition[] = [];
     for (let i = 0; i < 3; i++) {
       const index = (currentIndex + i) % galleryData.length;
       cards.push({ ...galleryData[index], position: i });
@@ -60,45 +95,16 @@ useEffect(() => {
     return cards;
   };
 
-  // Animation variants for smooth transitions
-  const cardVariants = {
-    left: {
-      scale: 0.95,
-      opacity: 0.75,
-      x: 0,
-      zIndex: 10,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    },
-    center: {
-      scale: 1.1,
-      opacity: 1,
-      x: 0,
-      zIndex: 20,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    },
-    right: {
-      scale: 0.95,
-      opacity: 0.75,
-      x: 0,
-      zIndex: 10,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
-  };
-
-  const getCardVariant = (index: number) => {
+  const getCardVariant = (index: number): 'left' | 'center' | 'right' => {
     if (index === 0) return 'left';
     if (index === 1) return 'center';
     if (index === 2) return 'right';
     return 'left';
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop';
   };
 
   if (isLoading) {
@@ -121,7 +127,6 @@ useEffect(() => {
   return (
     <section className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -137,7 +142,6 @@ useEffect(() => {
           </p>
         </motion.div>
 
-        {/* Gallery Cards Container */}
         <div className="relative h-96 flex items-center justify-center">
           <div className="flex space-x-8 relative">
             <AnimatePresence mode="popLayout">
@@ -169,7 +173,6 @@ useEffect(() => {
                     transition: { duration: 0.3 }
                   }}
                 >
-                  {/* Image Container */}
                   <div className="relative h-48 overflow-hidden">
                     <motion.img
                       src={item.imageURL}
@@ -177,13 +180,10 @@ useEffect(() => {
                       className="w-full h-full object-cover"
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.7 }}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop';
-                      }}
+                      onError={handleImageError}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     
-                    {/* Category Badge */}
                     <motion.div 
                       className="absolute top-4 left-4"
                       initial={{ opacity: 0, y: -20 }}
@@ -196,7 +196,6 @@ useEffect(() => {
                     </motion.div>
                   </div>
 
-                  {/* Content */}
                   <motion.div 
                     className="p-6 relative"
                     initial={{ opacity: 0, y: 20 }}
@@ -210,7 +209,6 @@ useEffect(() => {
                       {item.description}
                     </p>
                     
-                    {/* Decorative Element */}
                     <motion.div 
                       className="absolute bottom-2 right-4 w-8 h-8 border-2 border-yellow-400 rounded-full opacity-30"
                       animate={{ rotate: 360 }}
@@ -218,7 +216,6 @@ useEffect(() => {
                     />
                   </motion.div>
 
-                  {/* Hover Overlay */}
                   <motion.div 
                     className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent"
                     initial={{ opacity: 0 }}
@@ -231,7 +228,6 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Navigation Dots */}
         <motion.div 
           className="flex justify-center mt-12 space-x-3"
           initial={{ opacity: 0, y: 20 }}
