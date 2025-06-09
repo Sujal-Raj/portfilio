@@ -808,7 +808,7 @@ const Portfolio = () => {
             </motion.div>
           </div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection >
 
       {/* Footer */}
       {/* <footer className="py-12 bg-gray-900 border-t border-white border-opacity-10">
