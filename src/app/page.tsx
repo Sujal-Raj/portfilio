@@ -6,7 +6,7 @@ export default async function Home() {
     <>
       <h1>Portfilio project</h1>
       <GallerySection/>
-      <Footer/>
+      <Footer />
     </>
   );
 }
