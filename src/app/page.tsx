@@ -1,12 +1,14 @@
 import Footer from "./components/Footer";
-import GallerySection from "./components/Gallery";
+// import Navbar from "./components/Navbar";
+// import GallerySection from "./components/Gallery";
+import Portfolio from "./home/page";
 
 export default async function Home() {
   return (
     <>
-      <h1>Portfilio project</h1>
-      <GallerySection/>
-      <Footer/>
+    {/* <Navbar /> */}
+    <Portfolio/>
+    <Footer />
     </>
   );
 }

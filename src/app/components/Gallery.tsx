@@ -4,8 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
+type GalleryItem = {
+  _id: string;
+  imageURL: string;
+  title: string;
+  description: string;
+  catogery: string;
+  // add any other fields your gallery items have
+};
+
 const GallerySection = () => {
-  const [galleryData, setGalleryData] = useState([]);
+  const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -85,7 +94,7 @@ useEffect(() => {
     }
   };
 
-  const getCardVariant = (index) => {
+  const getCardVariant = (index: number) => {
     if (index === 0) return 'left';
     if (index === 1) return 'center';
     if (index === 2) return 'right';
@@ -169,7 +178,7 @@ useEffect(() => {
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.7 }}
                       onError={(e) => {
-                        e.target.src = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop';
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop';
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
