@@ -2,6 +2,7 @@ import { connectToDatabse } from "@/app/dbConfig/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/app/lib/config";
 import Blog from "@/app/models/blogModel";
+import { blob } from "stream/consumers";
 
 
 
@@ -52,3 +53,17 @@ export async function POST(req: NextRequest) {
 
 
 
+export async function GET(req:NextRequest) {
+    try {
+        await connectToDatabse();
+        const response = await Blog.find();
+        
+        return NextResponse.json({
+            message:"Blog fetched",
+            response
+        })
+    } catch (error:unknown) {
+        console.log(error)
+    }
+    
+}
