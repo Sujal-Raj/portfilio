@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Upload ,LogOut } from 'lucide-react';
-
+import { useRouter } from 'next/navigation';
 interface sidebarValues{
   isOpen: boolean,
   toggleSidebar: () => void
@@ -9,12 +9,29 @@ interface sidebarValues{
 // Sidebar Component
 const Sidebar = ({ isOpen, toggleSidebar }:sidebarValues) => {
   const sidebarItems = [
-    { icon: Upload, label: 'Add to gallery', href: '/dashboard', active: true },
-    // { icon: Upload, label: 'Upload Gallery', href: '/upload' },
+    { icon: Upload, label: 'Add to gallery', href: '/admin/dashboard', active: true },
+    { icon: Upload, label: 'Upload blog', href: '/admin/blog' },
     // { icon: Image, label: 'Gallery Management', href: '/gallery' },
     // { icon: Settings, label: 'Settings', href: '/settings' },
     // { icon: LogOut, label: 'Logout', href: '/logout' }
   ];
+  const router = useRouter();
+
+  const handleLogout = async () => {
+  try {
+    const res = await fetch('/api/logout', {
+      method: 'POST',
+    });
+
+    if (res.ok) {
+      router.push('/admin-login'); // Or wherever your login page is
+    } else {
+      console.error('Logout failed');
+    }
+  } catch (error) {
+    console.error('Error during logout:', error);
+  }
+};
 
   return (
     <>
@@ -69,7 +86,9 @@ const Sidebar = ({ isOpen, toggleSidebar }:sidebarValues) => {
             <p className="text-yellow-300 text-xs mt-1">Manage your gallery content</p>
           </div> */}
 
-          <div className='text-yellow-100 hover:bg-yellow-400 hover:text-black hover:translate-x-2 flex items-center px-4 py-3 mb-2 rounded-lg transition-all duration-200 hover:cursor-pointer'>
+          <div 
+          onClick={handleLogout}
+          className='text-yellow-100 hover:bg-yellow-400 hover:text-black hover:translate-x-2 flex items-center px-4 py-3 mb-2 rounded-lg transition-all duration-200 hover:cursor-pointer'>
                 <LogOut size={20} className="mr-3" />
                Logout
           </div>
