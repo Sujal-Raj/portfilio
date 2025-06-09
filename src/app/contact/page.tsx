@@ -3,7 +3,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -35,15 +35,15 @@ export default function ContactPage() {
             height={500}
             className="object-contain drop-shadow-2xl"
           /> */}
-           <h2 className="mt-6 text-2xl font-semibold text-gray-800">Let's Get Connected</h2>
+           <h2 className="mt-6 text-2xl font-semibold text-gray-800">Let&lsquo;s Get Connected</h2>
   <p className="mt-2 text-center text-gray-600 max-w-md">
-    We'd love to hear from you! Reach out with any questions, feedback, or just to say hello.
+    We&lsquo;d love to hear from you! Reach out with any questions, feedback, or just to say hello.
   </p>
         </div>
 
         {/* RIGHT SIDE – Form */}
         <div className="p-10">
-          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Let’s Connect</h2>
+          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Let&lsquo;s Connect</h2>
           <p className="text-gray-400 mb-10">Have a project or want to say hi? Drop a message below.</p>
 
           <form onSubmit={handleSubmit} className="space-y-8">

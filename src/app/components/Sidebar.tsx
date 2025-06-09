@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Menu, X, Home, Upload, Image, Settings, LogOut } from 'lucide-react';
+import React from 'react';
+import { X, Upload ,LogOut } from 'lucide-react';
 
 interface sidebarValues{
   isOpen: boolean,

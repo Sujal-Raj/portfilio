@@ -2,16 +2,21 @@
 
 import { useState } from "react";
 import Sidebar from "@/app/components/Sidebar"
-import { Menu, X, Home, Upload, Image, Settings, LogOut } from 'lucide-react';
+import { Menu,Upload,} from 'lucide-react';
 import axios from "axios";
-import { title } from "process";
+// import { title } from "process";
 
 
 
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    description: string;
+    catogery: string;
+    file: File | null;
+  }>({
     title: '',
     description: '',
     catogery: '',
@@ -24,7 +29,9 @@ const AdminDashboard = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -32,15 +39,26 @@ const AdminDashboard = () => {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   const file = e.target.files[0];
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     file: file
+  //   }));
+  // };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (e.target.files && e.target.files[0]) {
     const file = e.target.files[0];
     setFormData(prev => ({
       ...prev,
       file: file
     }));
-  };
+  }
+};
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitMessage('');
@@ -72,7 +90,8 @@ const AdminDashboard = () => {
         file: null
       });
       
-    } catch (error) {
+    } catch (error:unknown) {
+      console.log(error)
       setSubmitMessage('Error submitting form. Please try again.');
     } finally {
       setIsSubmitting(false);
