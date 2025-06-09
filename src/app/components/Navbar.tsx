@@ -18,10 +18,10 @@ const Navbar = () => {
   };
 
   const menuItems = [
-    { name: 'Home', href: '/' },
+    { name: 'Home', href: '/home' },
     { name: 'About', href: '/about' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Services', href: '/services' },
+    { name: 'Projects', href: '/project' },
+    { name: 'Services', href: '/servicess' },
     { name: 'Contact', href: '/contact' }
   ];
 
@@ -141,7 +141,7 @@ const Navbar = () => {
       </div>
 
       {/* Demo Content */}
-      <div className="pt-20 min-h-screen bg-black">
+      {/* <div className="pt-20 min-h-screen bg-black">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
@@ -167,7 +167,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
