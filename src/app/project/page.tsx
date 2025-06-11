@@ -1,12 +1,12 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
-import { ExternalLink, ArrowRight, Eye, Heart, Star, Zap, Layers, Palette, Monitor, Smartphone, Globe, Camera } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import {  ArrowRight, Eye, Heart, Zap, Layers, Monitor, Smartphone, Globe, Camera } from 'lucide-react';
 
 const ProjectsSection = () => {
-  const [hoveredProject, setHoveredProject] = useState(null);
+  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
-  const [viewMode, setViewMode] = useState('grid');
+  // const [viewMode, setViewMode] = useState('grid');
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -151,7 +151,7 @@ const ProjectsSection = () => {
     }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch(status) {
       case 'Featured': return 'bg-yellow-400 text-black';
       case 'Award Winner': return 'bg-red-500 text-white';
@@ -456,7 +456,7 @@ const ProjectsSection = () => {
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, i) => (
+                      {project.tags.map((tag) => (
                         <motion.span
                           key={tag}
                           className="bg-gray-800 text-gray-300 px-3 py-1 rounded-full text-sm border border-gray-600"

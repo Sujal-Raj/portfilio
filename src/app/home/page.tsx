@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import GallerySection from '../components/Gallery';
 
 import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
 import { 
@@ -12,7 +13,6 @@ import {
   Brush,
   Monitor,
   Printer,
-  Filter,
   Mail,
   Phone,
   MapPin,
@@ -20,11 +20,12 @@ import {
   Linkedin,
   Twitter,
   Star,
-  ChevronLeft,
+  
   Eye,
-  ExternalLink
+ 
 } from 'lucide-react';
 import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
+// import Gallery from '../models/galleryModel';;
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -32,9 +33,11 @@ const Portfolio = () => {
  const words = [
     {
       text: "Bring",
+      className: "text-white dark:text-white",
     },
     {
       text: "Ideas",
+      className: "text-white dark:text-white",
     },
     {
       text: "to Life",
@@ -506,7 +509,7 @@ const Portfolio = () => {
 
           {/* Projects Grid */}
           <motion.div 
-      className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+      className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12"
       layout
     >
       {filteredProjects.map((project, index) => (
@@ -613,6 +616,12 @@ const Portfolio = () => {
         </div>
       </AnimatedSection>
 
+
+{/* Gallery */} 
+ <GallerySection/>
+
+
+
       {/* Testimonials Section */}
       <AnimatedSection className="py-20 bg-gray-900">
         <div className="container mx-auto px-6 lg:px-12">
@@ -653,7 +662,7 @@ const Portfolio = () => {
               </div>
               
               <blockquote className="text-2xl lg:text-3xl font-light italic mb-8 text-gray-600">
-                "{testimonials[currentTestimonial].quote}"
+                {testimonials[currentTestimonial].quote}
               </blockquote>
               
               <div className="text-center">
@@ -704,7 +713,7 @@ const Portfolio = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Let's Work Together
+              Let&apos;s Work Together
             </motion.h2>
           </div>
 
@@ -760,7 +769,7 @@ const Portfolio = () => {
               <div>
                 <h3 className="text-2xl font-bold mb-6 text-yellow-400">Get In Touch</h3>
                 <p className="text-gray-300 text-lg leading-relaxed mb-8">
-                  Ready to bring your vision to life? Let's discuss your project and create something amazing together.
+                  Ready to bring your vision to life? Let&apos;s discuss your project and create something amazing together.
                 </p>
               </div>
 

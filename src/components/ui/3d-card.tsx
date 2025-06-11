@@ -36,11 +36,15 @@ export const CardContainer = ({
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+     console.log("Mouse X:", e.clientX);
+     console.log("Mouse Y:", e.clientY);
     setIsMouseEntered(true);
     if (!containerRef.current) return;
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+     console.log("Mouse X:", e.clientX);
+  console.log("Mouse Y:", e.clientY);
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
@@ -116,7 +120,8 @@ export const CardItem = ({
   rotateX?: number | string;
   rotateY?: number | string;
   rotateZ?: number | string;
-  [key: string]: any;
+// [key: string]: unknown;
+
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();

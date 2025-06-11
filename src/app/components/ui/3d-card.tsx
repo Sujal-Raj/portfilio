@@ -1,6 +1,5 @@
-"use client";
-
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
+// import { HoverHandlers } from "framer-motion";
 
 import React, {
   createContext,
@@ -35,12 +34,12 @@ export const CardContainer = ({
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseEnter = () => {
     setIsMouseEntered(true);
     if (!containerRef.current) return;
   };
 
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseLeave =() => {
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
@@ -86,7 +85,7 @@ export const CardBody = ({
   return (
     <div
       className={cn(
-        "h-100 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
+        "h-96 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
         className
       )}
     >
@@ -117,13 +116,12 @@ export const CardItem = ({
   rotateY?: number | string;
   rotateZ?: number | string;
   [key: string]: any;
+
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();
 
-  useEffect(() => {
-    handleAnimations();
-  }, [isMouseEntered]);
+  
 
   const handleAnimations = () => {
     if (!ref.current) return;
@@ -133,6 +131,12 @@ export const CardItem = ({
       ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
     }
   };
+  
+useEffect(() => {
+    handleAnimations();
+  }, [isMouseEntered, translateX, translateY, translateZ, rotateX, rotateY, rotateZ]); 
+  
+  
 
   return (
     <Tag

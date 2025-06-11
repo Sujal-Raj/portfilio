@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Palette, Zap, Layers, Sparkles, Code, Paintbrush, Monitor, Camera, Play, Pause } from 'lucide-react';
 
 const AboutSection = () => {
@@ -13,6 +13,15 @@ const AboutSection = () => {
   const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
+  const skills = [
+    { name: "Photoshop", icon: <Palette className="w-6 h-6" />, level: 95, color: "from-blue-500 to-purple-600" },
+    { name: "Illustrator", icon: <Sparkles className="w-6 h-6" />, level: 90, color: "from-orange-500 to-red-600" },
+    { name: "Figma", icon: <Layers className="w-6 h-6" />, level: 92, color: "from-green-500 to-teal-600" },
+    { name: "After Effects", icon: <Zap className="w-6 h-6" />, level: 85, color: "from-purple-500 to-pink-600" },
+    { name: "Cinema 4D", icon: <Monitor className="w-6 h-6" />, level: 78, color: "from-yellow-500 to-orange-600" },
+    { name: "Photography", icon: <Camera className="w-6 h-6" />, level: 88, color: "from-indigo-500 to-blue-600" }
+  ];
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -22,13 +31,15 @@ const AboutSection = () => {
   }, []);
 
   useEffect(() => {
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        setActiveSkill((prev) => (prev + 1) % skills.length);
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [isPlaying]);
+  if (isPlaying) {
+    const interval = setInterval(() => {
+      setActiveSkill((prev) => (prev + 1) % skills.length);
+      console.log(`Active skill changed to: ${skills.length}`);
+    }, 3000);
+    return () => clearInterval(interval);
+  }
+}, [isPlaying, skills.length]);
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -67,15 +78,6 @@ const AboutSection = () => {
     }
   };
 
-  const skills = [
-    { name: "Photoshop", icon: <Palette className="w-6 h-6" />, level: 95, color: "from-blue-500 to-purple-600" },
-    { name: "Illustrator", icon: <Sparkles className="w-6 h-6" />, level: 90, color: "from-orange-500 to-red-600" },
-    { name: "Figma", icon: <Layers className="w-6 h-6" />, level: 92, color: "from-green-500 to-teal-600" },
-    { name: "After Effects", icon: <Zap className="w-6 h-6" />, level: 85, color: "from-purple-500 to-pink-600" },
-    { name: "Cinema 4D", icon: <Monitor className="w-6 h-6" />, level: 78, color: "from-yellow-500 to-orange-600" },
-    { name: "Photography", icon: <Camera className="w-6 h-6" />, level: 88, color: "from-indigo-500 to-blue-600" }
-  ];
-
   const floatingElements = Array.from({ length: 20 }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
@@ -91,6 +93,7 @@ const AboutSection = () => {
         {/* Animated gradient background */}
         <motion.div 
           className="absolute inset-0 opacity-30"
+          style={{ y, opacity }}
           animate={{
             background: [
               "radial-gradient(circle at 20% 80%, rgba(255, 255, 0, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 0, 0.05) 0%, transparent 50%)",
@@ -242,7 +245,14 @@ const AboutSection = () => {
                       y: { duration: 10 + i * 2, repeat: Infinity, ease: "linear" }
                     }}
                   >
-                    {[<Code className="w-6 h-6 text-black" />, <Paintbrush className="w-6 h-6 text-black" />, <Sparkles className="w-6 h-6 text-black" />][i]}
+           {
+  [
+    <Code key="code" className="w-6 h-6 text-black" />,
+    <Paintbrush key="paintbrush" className="w-6 h-6 text-black" />,
+    <Sparkles key="sparkles" className="w-6 h-6 text-black" />
+  ][i]
+}
+
                   </motion.div>
                 ))}
               </div>
@@ -270,7 +280,7 @@ const AboutSection = () => {
                     Jane
                   </motion.span>{" "}
                   <motion.span 
-                    className="text-yellow-400 inline-block bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent"
+                    className="text-yellow-400 inline-block bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text hover:text-transparent"
                     animate={{
                       backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
                     }}
@@ -332,7 +342,7 @@ const AboutSection = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
                 >
-                  Every pixel tells a story. Every interaction sparks emotion. Let's create something extraordinary together.
+                  Every pixel tells a story. Every interaction sparks emotion. Let&apos;s create something extraordinary together.
                 </motion.p>
               </motion.div>
 
@@ -433,7 +443,7 @@ const AboutSection = () => {
                   />
                   
                   <span className="relative z-10 flex items-center space-x-3">
-                    <span>Let's Create Magic</span>
+                    <span>Let&apos;s Create Magic</span>
                     <motion.div
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 1, repeat: Infinity }}

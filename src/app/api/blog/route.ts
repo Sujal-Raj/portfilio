@@ -2,7 +2,7 @@ import { connectToDatabse } from "@/app/dbConfig/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/app/lib/config";
 import Blog from "@/app/models/blogModel";
-import { blob } from "stream/consumers";
+// import { blob } from "stream/consumers";
 
 
 
@@ -45,15 +45,20 @@ export async function POST(req: NextRequest) {
     await newBlog.save();
 
     return NextResponse.json({ message: "Blog posted successfully" });
-  } catch (error: any) {
+  }  catch (error: unknown) {
+  if (error instanceof Error) {
     console.error("Error posting blog:", error);
     return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 });
+  } else {
+    console.error("Unknown error:", error);
+    return NextResponse.json({ message: "Unknown server error" }, { status: 500 });
   }
 }
 
+}
 
 
-export async function GET(req:NextRequest) {
+export async function GET() {
     try {
         await connectToDatabse();
         const response = await Blog.find();
