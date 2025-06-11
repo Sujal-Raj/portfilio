@@ -154,6 +154,7 @@ const ContactSection: React.FC = () => {
       setTimeout(() => setSubmitStatus('idle'), 5000);
       
     } catch (error) {
+      console.log(error);
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
@@ -210,7 +211,7 @@ const ContactSection: React.FC = () => {
             <div className="flex items-center justify-center gap-2 mb-4">
               <Heart className="w-5 h-5 text-yellow-400 animate-pulse" />
               <span className="text-yellow-400 font-bold text-sm tracking-[0.3em] uppercase">
-                Let's Connect
+                Let&lsquo;s Connect
               </span>
               <Heart className="w-5 h-5 text-yellow-400 animate-pulse" style={{ animationDelay: '0.5s' }} />
             </div>
@@ -233,7 +234,7 @@ const ContactSection: React.FC = () => {
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
             Ready to create something 
             <span className="text-yellow-400 font-semibold"> extraordinary</span>? 
-            Let's bring your vision to life and make magic happen together.
+            Let&lsquo;s bring your vision to life and make magic happen together.
           </p>
         </div>
 
@@ -252,14 +253,14 @@ const ContactSection: React.FC = () => {
                   Send a Message
                 </h3>
                 <p className="text-gray-400 mb-8">
-                  Fill out the form below and I'll get back to you within 24 hours!
+                  Fill out the form below and I&lsquo;ll get back to you within 24 hours!
                 </p>
 
                 {/* Success/Error Messages */}
                 {submitStatus === 'success' && (
                   <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center gap-3 animate-pulse">
                     <Check className="w-5 h-5 text-green-400" />
-                    <span className="text-green-400 font-medium">Message sent successfully! I'll be in touch soon.</span>
+                    <span className="text-green-400 font-medium">Message sent successfully! I&lsquo;ll be in touch soon.</span>
                   </div>
                 )}
 
@@ -454,7 +455,7 @@ const ContactSection: React.FC = () => {
                 </h3>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  {socialLinks.map((social, index) => (
+                  {socialLinks.map((social) => (
                     <a
                       key={social.name}
                       href={social.url}
@@ -481,7 +482,7 @@ const ContactSection: React.FC = () => {
                   <span className="text-green-400 font-bold">Available for Projects</span>
                 </div>
                 <p className="text-gray-300 text-sm">
-                  Currently accepting new projects for Q2 2025. Let's create something amazing together!
+                  Currently accepting new projects for Q2 2025. Let&lsquo;s create something amazing together!
                 </p>
               </div>
             </div>

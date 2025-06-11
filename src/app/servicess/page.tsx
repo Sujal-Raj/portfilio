@@ -148,7 +148,7 @@ const ServicesSection: React.FC = () => {
           </div>
           
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
-            We don't just create designs – we craft 
+            We don&lsquo;t just create designs – we craft 
             <span className="text-yellow-400 font-semibold"> digital masterpieces </span>
             that transform brands and captivate audiences worldwide.
           </p>
@@ -179,7 +179,7 @@ const ServicesSection: React.FC = () => {
             <button className="group relative overflow-hidden bg-gradient-to-r from-yellow-400 to-amber-400 text-black px-12 py-6 font-bold text-lg transition-all duration-500 hover:shadow-2xl hover:shadow-yellow-400/25 transform hover:scale-105">
               <span className="relative z-10 flex items-center gap-3">
                 <Zap className="w-6 h-6" />
-                Let's Create Magic Together
+                Let&lsquo;s Create Magic Together
                 <ArrowRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
               </span>
               
