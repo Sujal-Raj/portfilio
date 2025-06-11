@@ -130,7 +130,7 @@ const MyWork: React.FC = () => {
           </h1>
           <div className="w-16 h-1 bg-yellow-400 mx-auto mb-3"></div>
           <p className="text-gray-300 text-sm sm:text-base max-w-xl mx-auto px-4">
-            Here are a few past design projects I've worked on. Want to see more?{' '}
+            Here are a few past design projects I&apos;ve worked on. Want to see more?{' '}
             <span className="text-yellow-400 hover:text-yellow-300 cursor-pointer transition-colors">
               Email me
             </span>

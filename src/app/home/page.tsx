@@ -10,7 +10,7 @@ import {
   Brush,
   Monitor,
   Printer,
-  Filter,
+  // Filter,
   Mail,
   Phone,
   MapPin,
@@ -18,15 +18,15 @@ import {
   Linkedin,
   Twitter,
   Star,
-  ChevronLeft,
-  Eye,
-  ExternalLink
+  // ChevronLeft,
+  // Eye,
+  // ExternalLink
 } from 'lucide-react';
 import MyWork from '../components/Work';
 import GallerySection from '../components/Gallery';
 
 const Portfolio = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
+  // const [activeFilter, setActiveFilter] = useState('All');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   // Animation variants
@@ -77,14 +77,14 @@ const Portfolio = () => {
   };
 
   // Sample data
-  const projects = [
-    { id: 1, title: 'Brand Identity Design', category: 'Branding', tags: ['Logo', 'Brand Guidelines', 'Stationery'] },
-    { id: 2, title: 'E-commerce Website', category: 'Web', tags: ['UI/UX', 'Responsive', 'E-commerce'] },
-    { id: 3, title: 'Event Poster Series', category: 'Posters', tags: ['Print Design', 'Typography', 'Events'] },
-    { id: 4, title: 'Mobile App Interface', category: 'UI-UX', tags: ['Mobile', 'UI Design', 'Prototyping'] },
-    { id: 5, title: 'Corporate Branding', category: 'Branding', tags: ['Corporate', 'Identity', 'Guidelines'] },
-    { id: 6, title: 'Restaurant Menu Design', category: 'Posters', tags: ['Menu', 'Print', 'Food & Beverage'] }
-  ];
+  // const projects = [
+  //   { id: 1, title: 'Brand Identity Design', category: 'Branding', tags: ['Logo', 'Brand Guidelines', 'Stationery'] },
+  //   { id: 2, title: 'E-commerce Website', category: 'Web', tags: ['UI/UX', 'Responsive', 'E-commerce'] },
+  //   { id: 3, title: 'Event Poster Series', category: 'Posters', tags: ['Print Design', 'Typography', 'Events'] },
+  //   { id: 4, title: 'Mobile App Interface', category: 'UI-UX', tags: ['Mobile', 'UI Design', 'Prototyping'] },
+  //   { id: 5, title: 'Corporate Branding', category: 'Branding', tags: ['Corporate', 'Identity', 'Guidelines'] },
+  //   { id: 6, title: 'Restaurant Menu Design', category: 'Posters', tags: ['Menu', 'Print', 'Food & Beverage'] }
+  // ];
 
   const testimonials = [
     {
@@ -130,11 +130,11 @@ const Portfolio = () => {
     }
   ];
 
-  const filterOptions = ['All', 'Branding', 'Web', 'Posters', 'UI-UX'];
+  // const filterOptions = ['All', 'Branding', 'Web', 'Posters', 'UI-UX'];
 
-  const filteredProjects = activeFilter === 'All' 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter);
+  // const filteredProjects = activeFilter === 'All' 
+  //   ? projects 
+  //   : projects.filter(project => project.category === activeFilter);
 
   type AnimatedSectionProps = {
     children: React.ReactNode;
@@ -637,7 +637,7 @@ const Portfolio = () => {
               </div>
               
               <blockquote className="text-2xl lg:text-3xl font-light italic mb-8 text-gray-600">
-                "{testimonials[currentTestimonial].quote}"
+                &quot;{testimonials[currentTestimonial].quote}&quot;
               </blockquote>
               
               <div className="text-center">
@@ -688,7 +688,7 @@ const Portfolio = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Let's Work Together
+              Let&apos;s Work Together
             </motion.h2>
           </div>
 
@@ -744,7 +744,7 @@ const Portfolio = () => {
               <div>
                 <h3 className="text-2xl font-bold mb-6 text-yellow-400">Get In Touch</h3>
                 <p className="text-gray-300 text-lg leading-relaxed mb-8">
-                  Ready to bring your vision to life? Let's discuss your project and create something amazing together.
+                  Ready to bring your vision to life? Let&apos;s discuss your project and create something amazing together.
                 </p>
               </div>
 
