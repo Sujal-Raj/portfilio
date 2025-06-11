@@ -22,6 +22,8 @@ import {
   Eye,
   ExternalLink
 } from 'lucide-react';
+import MyWork from '../components/Work';
+import GallerySection from '../components/Gallery';
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -231,13 +233,13 @@ const Portfolio = () => {
         >
           <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
             <div className="text-white space-y-8">
-              <motion.div
+              {/* <motion.div
                 variants={itemVariants}
                 className="inline-flex items-center space-x-2 bg-white bg-opacity-10 backdrop-blur-sm rounded-full px-4 py-2 border border-white border-opacity-20"
               >
                 <Sparkles className="w-4 h-4 text-yellow-400" />
                 <span className="text-sm font-medium text-yellow-400 ">Creative Designer</span>
-              </motion.div>
+              </motion.div> */}
 
               <motion.div variants={itemVariants} className="space-y-4">
                 <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
@@ -441,7 +443,7 @@ const Portfolio = () => {
       </AnimatedSection>
 
       {/* Work/Projects Section */}
-      <AnimatedSection className="py-20 bg-black">
+      {/* <AnimatedSection className="py-20 bg-black">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <motion.h3 
@@ -462,10 +464,10 @@ const Portfolio = () => {
               viewport={{ once: true }}
             >
               My Work
-            </motion.h2>
+            </motion.h2> */}
 
             {/* Filter Buttons */}
-            <motion.div 
+            {/* <motion.div 
               className="flex flex-wrap justify-center gap-4 mb-12"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -486,10 +488,10 @@ const Portfolio = () => {
                 </button>
               ))}
             </motion.div>
-          </div>
+          </div> */}
 
           {/* Projects Grid */}
-          <motion.div 
+          {/* <motion.div 
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
             layout
           >
@@ -533,7 +535,12 @@ const Portfolio = () => {
             ))}
           </motion.div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
+
+
+
+      <MyWork/>
+  
 
       {/* Services Section */}
       <AnimatedSection className="py-20 bg-white text-black">
@@ -587,6 +594,8 @@ const Portfolio = () => {
           </div>
         </div>
       </AnimatedSection>
+
+          <GallerySection/>
 
       {/* Testimonials Section */}
       <AnimatedSection className="py-20 bg-gray-900">
