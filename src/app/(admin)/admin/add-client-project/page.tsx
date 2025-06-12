@@ -119,15 +119,29 @@ const handleSubmit = async (e: SubmitEvent): Promise<void> => {
 
         submitData.append('projectsCount', projects.length.toString());
 
-        const debugData: SubmitProjectData = {
-            formData,
-            projects,
-            submitData,
-        };
+        const response = await fetch('/api/clientproject', {
+      method: 'POST',
+      body: submitData,
+    });
 
-        console.log('Form data ready for submission:', debugData);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to add project');
+    }
 
-        await new Promise<void>((resolve) => setTimeout(resolve, 2000));
+    const result = await response.json();
+    console.log('Project added successfully:', result);
+
+
+        // const debugData: SubmitProjectData = {
+        //     formData,
+        //     projects,
+        //     submitData,
+        // };
+
+        // console.log('Form data ready for submission:', debugData);
+
+        // await new Promise<void>((resolve) => setTimeout(resolve, 2000));
 
         setFormData({
             name: '',
