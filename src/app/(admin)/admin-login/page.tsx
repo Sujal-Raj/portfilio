@@ -73,12 +73,12 @@ const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
 };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen pt-20 bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="bg-black w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <User className="text-yellow-400 w-8 h-8" />
+          <div className="bg-black w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-yellow-400">
+            <User className="text-yellow-400 w-8 h-8 " />
           </div>
           <h1 className="text-3xl font-bold text-yellow-400 mb-2">Admin Login</h1>
           <p className="text-gray-600">Enter your credentials to access the admin panel</p>
