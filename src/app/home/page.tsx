@@ -25,11 +25,14 @@ import {
  
 } from 'lucide-react';
 import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
+// import Videos from '../components/Videos';
+import VideoGallery from '../components/VideoGallery';
+import Testimonials from '../components/Testimonial';
 // import Gallery from '../models/galleryModel';;
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All');
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  // const [currentTestimonial, setCurrentTestimonial] = useState(0);
  const words = [
     {
       text: "Bring",
@@ -102,26 +105,26 @@ const Portfolio = () => {
     { id: 6, title: 'Restaurant Menu Design', category: 'Posters', tags: ['Menu', 'Print', 'Food & Beverage'] }
   ];
 
-  const testimonials = [
-    {
-      quote: "Exceptional work! The brand identity they created perfectly captured our vision and elevated our business.",
-      client: "Sarah Johnson",
-      company: "Tech Innovations",
-      rating: 5
-    },
-    {
-      quote: "Professional, creative, and delivered on time. I highly recommend their design services.",
-      client: "Mike Chen",
-      company: "StartUp Co.",
-      rating: 5
-    },
-    {
-      quote: "Amazing attention to detail and great communication throughout the project.",
-      client: "Emma Davis",
-      company: "Creative Agency",
-      rating: 5
-    }
-  ];
+  // const testimonials = [
+  //   {
+  //     quote: "Exceptional work! The brand identity they created perfectly captured our vision and elevated our business.",
+  //     client: "Sarah Johnson",
+  //     company: "Tech Innovations",
+  //     rating: 5
+  //   },
+  //   {
+  //     quote: "Professional, creative, and delivered on time. I highly recommend their design services.",
+  //     client: "Mike Chen",
+  //     company: "StartUp Co.",
+  //     rating: 5
+  //   },
+  //   {
+  //     quote: "Amazing attention to detail and great communication throughout the project.",
+  //     client: "Emma Davis",
+  //     company: "Creative Agency",
+  //     rating: 5
+  //   }
+  // ];
 
   const services = [
     {
@@ -616,14 +619,24 @@ const Portfolio = () => {
         </div>
       </AnimatedSection>
 
+      {/* Videos section */}
+       <div > 
+        <VideoGallery/>
+        </div>
 
-{/* Gallery */} 
- <GallerySection/>
+        {/* Gallery */} 
+        <div > 
+
+         <GallerySection/>
+
+        </div>
 
 
 
       {/* Testimonials Section */}
-      <AnimatedSection className="py-20 bg-gray-900">
+
+      <Testimonials/>
+      {/* <AnimatedSection className="py-20 bg-gray-900">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <motion.h3 
@@ -690,7 +703,7 @@ const Portfolio = () => {
             </div>
           </div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
 
       {/* Contact Section */}
       <AnimatedSection className="py-20 bg-black">
