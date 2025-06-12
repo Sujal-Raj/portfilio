@@ -14,16 +14,18 @@ export async function POST(req:NextRequest){
 
     if(!User){
         return NextResponse.json({
-            message:"Admin Not Found"
-        })
+    message: "Admin Not Found"
+}, { status: 404 });
+
     }
 
     const validPassword = await bcrypt.compare(password,User.password);
 
     if(!validPassword){
         return NextResponse.json({
-            message:"Invalid password"
-        })
+    message: "Invalid password"
+}, { status: 401 });
+
     }
 
     const tokenData = {

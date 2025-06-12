@@ -1,262 +1,275 @@
 "use client"
+import React, { useState, useRef, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import {
+  Autoplay,
+  Pagination,
+  EffectCoverflow,
+  Navigation,
+} from "swiper/modules";
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
-import axios from 'axios';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/effect-coverflow";
+import "swiper/css/navigation";
+import axios from "axios";
+import Image from "next/image";
 
-// Define interfaces for the data structure
-interface GalleryItem {
-  _id: string;
-  title: string;
-  description: string;
-  catogery: string;
-  imageURL: string;
-}
-
-interface GalleryItemWithPosition extends GalleryItem {
-  position: number;
-}
-
-// Define animation variants type
-const cardVariants: Variants = {
-  left: {
-    scale: 0.95,
-    opacity: 0.75,
-    x: 0,
-    zIndex: 10,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94]
-    }
-  },
-  center: {
-    scale: 1.1,
-    opacity: 1,
-    x: 0,
-    zIndex: 20,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94]
-    }
-  },
-  right: {
-    scale: 0.95,
-    opacity: 0.75,
-    x: 0,
-    zIndex: 10,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94]
-    }
+const GallerySection = () => {
+  const [activeImage, setActiveImage] = useState<GalleryImage | null>(null);
+  const swiperRef = useRef<import("swiper").Swiper | null>(null);
+  interface GalleryImage {
+    id: string;
+    src: string;
+    alt: string;
+    title: string;
+    description: string;
+    category?: string;
   }
-};
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
 
-const GallerySection: React.FC = () => {
-  const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const fetchGallery = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/gallery");
+      // console.log(response.data.gallery);
+      
+      // Since your console shows the data is directly an array, not wrapped in gallery property
+      if (response.data.gallery && Array.isArray(response.data.gallery)) {
+        // Transform backend data to match component structure
+        interface GalleryImage {
+          id: string;
+          src: string;
+          alt: string;
+          title: string;
+          description: string;
+          category?: string;
+        }
+
+        interface BackendGalleryItem {
+          _id: string;
+          imageURL: string;
+          title: string;
+          description: string;
+          catogery?: string;
+        }
+
+        const transformedImages: GalleryImage[] = (response.data.gallery as BackendGalleryItem[]).map((item: BackendGalleryItem): GalleryImage => ({
+          id: item._id,
+          src: item.imageURL,
+          alt: item.title,
+          title: item.title,
+          description: item.description,
+          category: item.catogery // Note: keeping the typo from backend
+        }));
+        setGalleryImages(transformedImages);
+      }
+    } catch (error) {
+      console.error("Error fetching gallery:", error);
+      // Fallback to empty array or show error message
+      setGalleryImages([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchGallery = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get<{ gallery: GalleryItem[] }>('/api/gallery');
-        setGalleryData(response.data.gallery);
-      } catch (error) {
-        console.error("Error fetching gallery:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchGallery();
   }, []);
 
-  useEffect(() => {
-    if (galleryData.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => 
-          prevIndex === galleryData.length - 1 ? 0 : prevIndex + 1
-        );
-      }, 4000);
-
-      return () => clearInterval(interval);
-    }
-  }, [galleryData]);
-
-  const getVisibleCards = (): GalleryItemWithPosition[] => {
-    if (galleryData.length === 0) return [];
-    
-    const cards: GalleryItemWithPosition[] = [];
-    for (let i = 0; i < 3; i++) {
-      const index = (currentIndex + i) % galleryData.length;
-      cards.push({ ...galleryData[index], position: i });
-    }
-    return cards;
-  };
-
-  const getCardVariant = (index: number): 'left' | 'center' | 'right' => {
-    if (index === 0) return 'left';
-    if (index === 1) return 'center';
-    if (index === 2) return 'right';
-    return 'left';
-  };
-
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    target.src = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop';
-  };
-
-  if (isLoading) {
+  if (loading) {
     return (
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-800">
-        <div className="container mx-auto px-6">
+      <div className="bg-gray-50 py-16 relative">
+        <div className="container mx-auto px-4">
           <div className="text-center">
-            <motion.div 
-              className="inline-block rounded-full h-12 w-12 border-b-2 border-yellow-400"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
-            <p className="text-white mt-4">Loading Gallery...</p>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+            <p className="mt-2 text-gray-600">Loading gallery...</p>
           </div>
         </div>
-      </section>
+      </div>
     );
   }
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-5xl font-bold text-white mb-4">
-            Our <span className="text-yellow-400">Gallery</span>
+    <div className="bg-black py-16 relative">
+      <div className="container mx-auto px-4">
+        {/* Header */}
+        <div className="relative text-center mb-16">
+          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-black/5"></div>
+          <h2 className="relative inline-block text-3xl md:text-4xl font-bold text-white">
+            Work <span className="text-yellow-500">Gallery</span>
           </h2>
-          <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Explore our collection of stunning visuals capturing moments of excellence and creativity
-          </p>
-        </motion.div>
-
-        <div className="relative h-96 flex items-center justify-center">
-          <div className="flex space-x-8 relative">
-            <AnimatePresence mode="popLayout">
-              {getVisibleCards().map((item, index) => (
-                <motion.div
-                  key={`${item._id}-${currentIndex}`}
-                  variants={cardVariants}
-                  initial={getCardVariant(index)}
-                  animate={getCardVariant(index)}
-                  exit={{ 
-                    opacity: 0, 
-                    scale: 0.8,
-                    transition: { duration: 0.3 }
-                  }}
-                  className={`
-                    relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden
-                    border border-gray-700 shadow-2xl
-                    ${index === 1 ? 'shadow-yellow-400/20' : ''}
-                  `}
-                  style={{
-                    width: '350px',
-                    height: '280px',
-                  }}
-                  whileHover={{
-                    scale: index === 1 ? 1.15 : 1.0,
-                    boxShadow: index === 1 
-                      ? '0 25px 50px -12px rgba(250, 204, 21, 0.3)' 
-                      : '0 25px 50px -12px rgba(250, 204, 21, 0.15)',
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <motion.img
-                      src={item.imageURL}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.7 }}
-                      onError={handleImageError}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    
-                    <motion.div 
-                      className="absolute top-4 left-4"
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2, duration: 0.5 }}
-                    >
-                      <span className="bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-semibold">
-                        {item.catogery}
-                      </span>
-                    </motion.div>
-                  </div>
-
-                  <motion.div 
-                    className="p-6 relative"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                  >
-                    <h3 className="text-xl font-bold text-white mb-2 line-clamp-1">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-300 text-sm line-clamp-2 leading-relaxed">
-                      {item.description}
-                    </p>
-                    
-                    <motion.div 
-                      className="absolute bottom-2 right-4 w-8 h-8 border-2 border-yellow-400 rounded-full opacity-30"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    />
-                  </motion.div>
-
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+          <div className="mt-4 flex justify-center">
+            <div className="w-16 h-1 bg-yellow-500"></div>
           </div>
+          <p className="mt-4 max-w-2xl mx-auto text-gray-600 text-sm sm:text-base">
+            Explore my work Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui, aperiam?
+          </p>
         </div>
 
-        <motion.div 
-          className="flex justify-center mt-12 space-x-3"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-        >
-          {galleryData.map((_, index) => (
-            <motion.button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`
-                w-3 h-3 rounded-full transition-all duration-300
-                ${index === currentIndex 
-                  ? 'bg-yellow-400' 
-                  : 'bg-gray-600 hover:bg-gray-500'
-                }
-              `}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              animate={{
-                scale: index === currentIndex ? 1.25 : 1,
-                backgroundColor: index === currentIndex ? '#facc15' : '#4b5563'
+        {/* Swiper Carousel */}
+        {galleryImages.length > 0 ? (
+          <div className="relative">
+            <Swiper
+              effect="coverflow"
+              grabCursor={true}
+              centeredSlides={true}
+              slidesPerView="auto"
+              loop={true}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              coverflowEffect={{
+                rotate: 20,
+                stretch: 0,
+                depth: 200,
+                modifier: 1,
+                slideShadows: true,
               }}
-              transition={{ duration: 0.3 }}
-            />
-          ))}
-        </motion.div>
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+              }}
+              pagination={{ clickable: true }}
+              navigation={false}
+              modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
+              className="mySwiper"
+            >
+              {galleryImages.map((image) => (
+                <SwiperSlide
+                  key={image.id}
+                  style={{ width: "85%", maxWidth: "500px", height: "400px" }}
+                >
+                  <div
+                    className="relative w-full h-full rounded-2xl overflow-hidden shadow-lg cursor-pointer"
+                    onClick={() => setActiveImage(image)}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      // width={100}
+                      // height={100}
+                      className="w-full h-full object-cover transition duration-300 hover:scale-105"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "https://via.placeholder.com/500x400/cccccc/666666?text=Image+Not+Found";
+                      }}
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent p-4 sm:p-6">
+                      <h3 className="text-yellow-400 font-semibold text-lg sm:text-xl mb-1">
+                        {image.title}
+                      </h3>
+                      <p className="text-white/80 text-xs sm:text-sm">
+                        {image.description}
+                      </p>
+                      {image.category && (
+                        <span className="inline-block bg-yellow-500 text-black text-xs px-2 py-1 rounded-full mt-1">
+                          {image.category}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Navigation Buttons */}
+            <button
+              className="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 bg-yellow-500 hover:bg-yellow-600 shadow-lg rounded-full p-2 ml-2 sm:ml-4 transition-colors"
+              onClick={() => swiperRef.current?.slidePrev()}
+              aria-label="Previous Slide"
+            >
+              <svg
+                className="w-6 h-6 text-black"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            <button
+              className="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 bg-yellow-500 hover:bg-yellow-600 shadow-lg rounded-full p-2 mr-2 sm:mr-4 transition-colors"
+              onClick={() => swiperRef.current?.slideNext()}
+              aria-label="Next Slide"
+            >
+              <svg
+                className="w-6 h-6 text-black"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-600">No images found in gallery.</p>
+          </div>
+        )}
       </div>
-    </section>
+
+      {/* Image Modal */}
+      {activeImage && (
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setActiveImage(null)}
+          onKeyDown={(e) => e.key === "Escape" && setActiveImage(null)}
+          tabIndex={0}
+          aria-hidden="true"
+        >
+          <div className="max-w-4xl w-[90%] md:w-auto bg-white rounded-lg overflow-hidden shadow-lg relative">
+            <Image
+              src={activeImage.src}
+              alt={activeImage.alt}
+              className="w-full h-auto max-h-[90vh] object-contain"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent p-6">
+              <h3 className="text-yellow-400 font-semibold text-xl mb-2">
+                {activeImage.title}
+              </h3>
+              <p className="text-white/90 text-sm mb-2">
+                {activeImage.description}
+              </p>
+              {activeImage.category && (
+                <span className="inline-block bg-yellow-500 text-black text-xs px-2 py-1 rounded-full">
+                  {activeImage.category}
+                </span>
+              )}
+            </div>
+            <button
+              onClick={() => setActiveImage(null)}
+              className="absolute top-3 right-3 bg-yellow-500 hover:bg-yellow-600 rounded-full shadow p-2 transition-colors"
+            >
+              <svg
+                className="w-6 h-6 text-black"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

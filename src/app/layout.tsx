@@ -26,12 +26,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // const pathName = typeof window !== 'undefined' ? window.location.pathname : '';
+  // const isAdminRoute = pathName.startsWith('/admin');
+
+  // // If it's an admin route, only render children without root layout styles
+  // if (isAdminRoute) {
+  //   return children;
+  // }
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navbar/>
+        {/* <VideoGallery/> */}
         {children}
         <Footer />
       </body>

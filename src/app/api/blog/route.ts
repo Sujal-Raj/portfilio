@@ -2,7 +2,6 @@ import { connectToDatabse } from "@/app/dbConfig/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/app/lib/config";
 import Blog from "@/app/models/blogModel";
-// import { blob } from "stream/consumers";
 
 
 
@@ -45,17 +44,15 @@ export async function POST(req: NextRequest) {
     await newBlog.save();
 
     return NextResponse.json({ message: "Blog posted successfully" });
-  }  catch (error: unknown) {
-  if (error instanceof Error) {
+  } catch (error: unknown) {
     console.error("Error posting blog:", error);
-    return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 });
-  } else {
-    console.error("Unknown error:", error);
-    return NextResponse.json({ message: "Unknown server error" }, { status: 500 });
+    const errorMessage = typeof error === "object" && error !== null && "message" in error
+      ? (error as { message: string }).message
+      : String(error);
+    return NextResponse.json({ message: "Server error", error: errorMessage }, { status: 500 });
   }
 }
 
-}
 
 
 export async function GET() {

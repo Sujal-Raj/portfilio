@@ -1,9 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import GallerySection from '../components/Gallery';
-
-import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
 import { 
   ChevronRight, 
   Sparkles, 
@@ -13,6 +10,7 @@ import {
   Brush,
   Monitor,
   Printer,
+  // Filter,
   Mail,
   Phone,
   MapPin,
@@ -20,14 +18,16 @@ import {
   Linkedin,
   Twitter,
   Star,
-  
-  Eye,
- 
+  // ChevronLeft,
+  // Eye,
+  // ExternalLink
 } from 'lucide-react';
 import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
 // import Videos from '../components/Videos';
 import VideoGallery from '../components/VideoGallery';
 import Testimonials from '../components/Testimonial';
+import MyWork from '../components/Work';
+import GallerySection from '../components/Gallery';
 // import Gallery from '../models/galleryModel';;
 
 const Portfolio = () => {
@@ -96,14 +96,14 @@ const Portfolio = () => {
   };
 
   // Sample data
-  const projects = [
-    { id: 1, title: 'Brand Identity Design', category: 'Branding', tags: ['Logo', 'Brand Guidelines', 'Stationery'] },
-    { id: 2, title: 'E-commerce Website', category: 'Web', tags: ['UI/UX', 'Responsive', 'E-commerce'] },
-    { id: 3, title: 'Event Poster Series', category: 'Posters', tags: ['Print Design', 'Typography', 'Events'] },
-    { id: 4, title: 'Mobile App Interface', category: 'UI-UX', tags: ['Mobile', 'UI Design', 'Prototyping'] },
-    { id: 5, title: 'Corporate Branding', category: 'Branding', tags: ['Corporate', 'Identity', 'Guidelines'] },
-    { id: 6, title: 'Restaurant Menu Design', category: 'Posters', tags: ['Menu', 'Print', 'Food & Beverage'] }
-  ];
+  // const projects = [
+  //   { id: 1, title: 'Brand Identity Design', category: 'Branding', tags: ['Logo', 'Brand Guidelines', 'Stationery'] },
+  //   { id: 2, title: 'E-commerce Website', category: 'Web', tags: ['UI/UX', 'Responsive', 'E-commerce'] },
+  //   { id: 3, title: 'Event Poster Series', category: 'Posters', tags: ['Print Design', 'Typography', 'Events'] },
+  //   { id: 4, title: 'Mobile App Interface', category: 'UI-UX', tags: ['Mobile', 'UI Design', 'Prototyping'] },
+  //   { id: 5, title: 'Corporate Branding', category: 'Branding', tags: ['Corporate', 'Identity', 'Guidelines'] },
+  //   { id: 6, title: 'Restaurant Menu Design', category: 'Posters', tags: ['Menu', 'Print', 'Food & Beverage'] }
+  // ];
 
   // const testimonials = [
   //   {
@@ -149,11 +149,11 @@ const Portfolio = () => {
     }
   ];
 
-  const filterOptions = ['All', 'Branding', 'Web', 'Posters', 'UI-UX'];
+  // const filterOptions = ['All', 'Branding', 'Web', 'Posters', 'UI-UX'];
 
-  const filteredProjects = activeFilter === 'All' 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter);
+  // const filteredProjects = activeFilter === 'All' 
+  //   ? projects 
+  //   : projects.filter(project => project.category === activeFilter);
 
   type AnimatedSectionProps = {
     children: React.ReactNode;
@@ -252,17 +252,16 @@ const Portfolio = () => {
         >
           <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
             <div className="text-white space-y-8">
-              <motion.div
+              {/* <motion.div
                 variants={itemVariants}
                 className="inline-flex items-center space-x-2 bg-white bg-opacity-10 backdrop-blur-sm rounded-full px-4 py-2 border border-white border-opacity-20"
               >
                 <Sparkles className="w-4 h-4 text-yellow-400" />
                 <span className="text-sm font-medium text-yellow-400 ">Creative Designer</span>
-              </motion.div>
+              </motion.div> */}
 
               <motion.div variants={itemVariants} className="space-y-4">
-                  <TypewriterEffectSmooth words={words} />
-                {/* <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
                   Bringing
                   <span className="relative inline-block mx-4">
                     <span className="text-yellow-400">Ideas</span>
@@ -274,7 +273,7 @@ const Portfolio = () => {
                     />
                   </span>
                   to Life
-                </h1> */}
+                </h1>
                 <div className="flex items-center space-x-4 text-lg">
                   <motion.div
                     className="w-12 h-0.5 bg-yellow-400"
@@ -463,7 +462,7 @@ const Portfolio = () => {
       </AnimatedSection>
 
       {/* Work/Projects Section */}
-      <AnimatedSection className="py-20 bg-black">
+      {/* <AnimatedSection className="py-20 bg-black">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="text-center mb-16">
             <motion.h3 
@@ -484,10 +483,10 @@ const Portfolio = () => {
               viewport={{ once: true }}
             >
               My Work
-            </motion.h2>
+            </motion.h2> */}
 
             {/* Filter Buttons */}
-            <motion.div 
+            {/* <motion.div 
               className="flex flex-wrap justify-center gap-4 mb-12"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -508,63 +507,59 @@ const Portfolio = () => {
                 </button>
               ))}
             </motion.div>
-          </div>
+          </div> */}
 
           {/* Projects Grid */}
-          <motion.div 
-      className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12"
-      layout
-    >
-      {filteredProjects.map((project, index) => (
-        <CardContainer key={project.id} className="group/card">
-          <CardBody
-            className="relative bg-gray-900 rounded-2xl overflow-hidden border border-white/10 p-4"
+          {/* <motion.div 
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            layout
           >
-            <motion.div
-              className="aspect-[4/3] bg-gradient-to-br from-yellow-400 to-yellow-600 relative overflow-hidden rounded-xl"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.05 }}
-              layout
-            >
-              <div className="absolute inset-0 bg-black bg-opacity-20 group-hover/card:bg-opacity-40 transition-all duration-300"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-black text-center">
-                  <Eye className="w-12 h-12 mx-auto mb-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
-                  <p className="font-medium opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
-                    View Project
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <div className="p-4">
-              <CardItem
-                translateZ="50"
-                className="text-xl font-bold mb-2 text-white group-hover/card:text-yellow-400 transition-colors duration-300"
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                className="group relative bg-gray-900 rounded-2xl overflow-hidden cursor-pointer"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.05 }}
+                layout
               >
-                {project.title}
-              </CardItem>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {project.tags.map((tag) => (
-                  <CardItem
-                    key={tag}
-                    translateZ="20"
-                    className="px-3 py-1 bg-yellow-400 bg-opacity-20 text-yellow-400 text-sm rounded-full"
-                     >
-                    {tag}
-                  </CardItem>
-                ))}
-              </div>
-            </div>
-          </CardBody>
-        </CardContainer>
-      ))}
-    </motion.div>
+                <div className="aspect-[4/3] bg-gradient-to-br from-yellow-400 to-yellow-600 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 transition-all duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-black text-center">
+                      <Eye className="w-12 h-12 mx-auto mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <p className="font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">View Project</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2 group-hover:text-yellow-400 transition-colors duration-300">
+                    {project.title}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span 
+                        key={tag}
+                        className="px-3 py-1 bg-yellow-400 bg-opacity-20 text-gray-600 text-sm rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
+
+
+
+      <MyWork/>
+  
 
       {/* Services Section */}
       <AnimatedSection className="py-20 bg-white text-black">
@@ -675,7 +670,7 @@ const Portfolio = () => {
               </div>
               
               <blockquote className="text-2xl lg:text-3xl font-light italic mb-8 text-gray-600">
-                {testimonials[currentTestimonial].quote}
+                &quot;{testimonials[currentTestimonial].quote}&quot;
               </blockquote>
               
               <div className="text-center">
