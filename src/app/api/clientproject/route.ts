@@ -88,3 +88,22 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+
+export async function GET(){
+  try {
+    await connectToDatabse();
+    const response = await ClientProject.find();
+
+    return NextResponse.json({
+      message:"Client Project fetched",
+      data:response
+    },{status:200})
+    
+  } catch (error:unknown) {
+    console.log(error)
+    return NextResponse.json({
+      message:"Error Fetching Client"
+    },{status:500})
+  }
+}
