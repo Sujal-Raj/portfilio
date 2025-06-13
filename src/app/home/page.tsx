@@ -22,13 +22,32 @@ import {
   // Eye,
   // ExternalLink
 } from 'lucide-react';
+import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
+// import Videos from '../components/Videos';
+import VideoGallery from '../components/VideoGallery';
+import Testimonials from '../components/Testimonial';
 import MyWork from '../components/Work';
 import GallerySection from '../components/Gallery';
+// import Gallery from '../models/galleryModel';;
 
 const Portfolio = () => {
-  // const [activeFilter, setActiveFilter] = useState('All');
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
+  const [activeFilter, setActiveFilter] = useState('All');
+  // const [currentTestimonial, setCurrentTestimonial] = useState(0);
+ const words = [
+    {
+      text: "Bring",
+      className: "text-white dark:text-white",
+    },
+    {
+      text: "Ideas",
+      className: "text-white dark:text-white",
+    },
+    {
+      text: "to Life",
+       className: "text-yellow-400 dark:text-yellow-400",
+    },
+   
+  ];
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -86,26 +105,26 @@ const Portfolio = () => {
   //   { id: 6, title: 'Restaurant Menu Design', category: 'Posters', tags: ['Menu', 'Print', 'Food & Beverage'] }
   // ];
 
-  const testimonials = [
-    {
-      quote: "Exceptional work! The brand identity they created perfectly captured our vision and elevated our business.",
-      client: "Sarah Johnson",
-      company: "Tech Innovations",
-      rating: 5
-    },
-    {
-      quote: "Professional, creative, and delivered on time. I highly recommend their design services.",
-      client: "Mike Chen",
-      company: "StartUp Co.",
-      rating: 5
-    },
-    {
-      quote: "Amazing attention to detail and great communication throughout the project.",
-      client: "Emma Davis",
-      company: "Creative Agency",
-      rating: 5
-    }
-  ];
+  // const testimonials = [
+  //   {
+  //     quote: "Exceptional work! The brand identity they created perfectly captured our vision and elevated our business.",
+  //     client: "Sarah Johnson",
+  //     company: "Tech Innovations",
+  //     rating: 5
+  //   },
+  //   {
+  //     quote: "Professional, creative, and delivered on time. I highly recommend their design services.",
+  //     client: "Mike Chen",
+  //     company: "StartUp Co.",
+  //     rating: 5
+  //   },
+  //   {
+  //     quote: "Amazing attention to detail and great communication throughout the project.",
+  //     client: "Emma Davis",
+  //     company: "Creative Agency",
+  //     rating: 5
+  //   }
+  // ];
 
   const services = [
     {
@@ -225,146 +244,140 @@ const Portfolio = () => {
           />
         </div>
 
-        <motion.div
-          className="relative z-10 container mx-auto px-6 lg:px-12 min-h-screen flex items-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
-            <div className="text-white space-y-8">
-              {/* <motion.div
-                variants={itemVariants}
-                className="inline-flex items-center space-x-2 bg-white bg-opacity-10 backdrop-blur-sm rounded-full px-4 py-2 border border-white border-opacity-20"
-              >
-                <Sparkles className="w-4 h-4 text-yellow-400" />
-                <span className="text-sm font-medium text-yellow-400 ">Creative Designer</span>
-              </motion.div> */}
-
-              <motion.div variants={itemVariants} className="space-y-4">
-                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                  Bringing
-                  <span className="relative inline-block mx-4">
-                    <span className="text-yellow-400">Ideas</span>
-                    <motion.div
-                      className="absolute -bottom-2 left-0 right-0 h-3 bg-yellow-400 opacity-30"
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ delay: 1, duration: 0.8 }}
-                    />
-                  </span>
-                  to Life
-                </h1>
-                <div className="flex items-center space-x-4 text-lg">
-                  <motion.div
-                    className="w-12 h-0.5 bg-yellow-400"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: 1.5, duration: 0.6 }}
-                  />
-                  <span className="text-gray-300">Through Visual Storytelling</span>
-                </div>
-              </motion.div>
-
-              <motion.p
-                variants={itemVariants}
-                className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-lg"
-              >
-                Freelance graphic designer crafting compelling visuals that communicate, inspire, and elevate your brand to new heights.
-              </motion.p>
-
-              <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
-                {['Brand Identity', 'Web Design', 'Print Design', 'Illustration'].map((skill, index) => (
-                  <motion.span
-                    key={skill}
-                    className="px-4 py-2 bg-yellow-400 bg-opacity-20 text-black rounded-full text-sm font-medium border border-yellow-400 border-opacity-30"
-                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(251, 191, 36, 0.3)' }}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 2 + index * 0.1 }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </motion.div>
-
-              <motion.div variants={itemVariants} className="pt-4">
-                <motion.button
-                  className="group inline-flex items-center space-x-3 bg-yellow-400 text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition-all duration-300"
-                  whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(251, 191, 36, 0.3)" }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span>View My Work</span>
-                  <motion.div className="group-hover:translate-x-1 transition-transform duration-300">
-                    <ChevronRight className="w-5 h-5" />
-                  </motion.div>
-                </motion.button>
-              </motion.div>
-            </div>
-
+       
+  {/* Main Container */}
+  <motion.div
+    className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-12 min-h-screen flex items-center"
+    variants={containerVariants}
+    initial="hidden"
+    animate="visible"
+  >
+    <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-2 gap-12 items-center">
+      {/* Left Section: Text Content */}
+      <div className="text-white space-y-8 w-full">
+        <motion.div variants={itemVariants} className="space-y-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight">
+            Bringing
+            <span className="relative inline-block mx-4">
+              <span className="text-yellow-400">Ideas</span>
+              <motion.div
+                className="absolute -bottom-2 left-0 right-0 h-3 bg-yellow-400 opacity-30"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 1, duration: 0.8 }}
+              />
+            </span>
+            to Life
+          </h1>
+          <div className="flex items-center space-x-4 text-base sm:text-lg">
             <motion.div
-              variants={itemVariants}
-              className="relative flex justify-center lg:justify-end"
-            >
-              <div className="relative">
-                <motion.div
-                  className="relative w-80 h-80 lg:w-96 lg:h-96"
-                  variants={pulseVariants}
-                  animate="animate"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full"></div>
-                  <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                      <div className="text-center text-gray-600">
-                        <Palette className="w-16 h-16 mx-auto mb-4" />
-                        <p className="text-sm font-medium">Profile Image</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <motion.div
-                    className="absolute -top-6 -right-6 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  >
-                    <Zap className="w-6 h-6 text-yellow-500" />
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute -bottom-4 -left-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center"
-                    variants={floatingVariants}
-                    animate="animate"
-                  >
-                    <Sparkles className="w-8 h-8 text-black" />
-                  </motion.div>
-                </motion.div>
-              </div>
-            </motion.div>
+              className="w-10 sm:w-12 h-0.5 bg-yellow-400"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1.5, duration: 0.6 }}
+            />
+            <span className="text-gray-300">Through Visual Storytelling</span>
           </div>
         </motion.div>
 
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3 }}
+        <motion.p
+          variants={itemVariants}
+          className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-lg"
         >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex flex-col items-center space-y-2"
-          >
-            <span className="text-sm text-gray-400">Scroll to explore</span>
-            <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-              <motion.div
-                className="w-1 h-3 bg-yellow-400 rounded-full mt-2"
-                animate={{ y: [0, 16, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              />
-            </div>
-          </motion.div>
+          Freelance graphic designer crafting compelling visuals that communicate, inspire, and elevate your brand to new heights.
+        </motion.p>
+
+        <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
+          {['Brand Identity', 'Web Design', 'Print Design', 'Illustration'].map((skill, index) => (
+            <motion.span
+              key={skill}
+              className="px-4 py-2 bg-yellow-400 bg-opacity-20 text-black rounded-full text-sm font-medium border border-yellow-400 border-opacity-30"
+              whileHover={{ scale: 1.05, backgroundColor: 'rgba(251, 191, 36, 0.3)' }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 2 + index * 0.1 }}
+            >
+              {skill}
+            </motion.span>
+          ))}
         </motion.div>
-      </section>
+
+        <motion.div variants={itemVariants} className="pt-4">
+          <motion.button
+            className="group inline-flex items-center space-x-3 bg-yellow-400 text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg hover:bg-yellow-300 transition-all duration-300"
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(251, 191, 36, 0.3)" }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>View My Work</span>
+            <motion.div className="group-hover:translate-x-1 transition-transform duration-300">
+              <ChevronRight className="w-5 h-5" />
+            </motion.div>
+          </motion.button>
+        </motion.div>
+      </div>
+
+      {/* Right Section: Image/Visual */}
+      <motion.div variants={itemVariants} className="relative flex justify-center w-full">
+        <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md xl:max-w-lg">
+          <motion.div
+            className="relative w-full aspect-square"
+            variants={pulseVariants}
+            animate="animate"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full" />
+            <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center overflow-hidden">
+              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                <div className="text-center text-gray-600">
+                  <Palette className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4" />
+                  <p className="text-sm font-medium">Profile Image</p>
+                </div>
+              </div>
+            </div>
+
+            <motion.div
+              className="absolute -top-6 -right-6 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center shadow-lg"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            >
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" />
+            </motion.div>
+
+            <motion.div
+              className="absolute -bottom-4 -left-4 w-12 h-12 sm:w-16 sm:h-16 bg-yellow-400 rounded-full flex items-center justify-center"
+              variants={floatingVariants}
+              animate="animate"
+            >
+              <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-black" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
+  </motion.div>
+
+  {/* Scroll Indicator */}
+  <motion.div
+    className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 3 }}
+  >
+    <motion.div
+      animate={{ y: [0, 10, 0] }}
+      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      className="flex flex-col items-center space-y-2"
+    >
+      <span className="text-xs sm:text-sm text-gray-400">Scroll to explore</span>
+      <div className="w-5 sm:w-6 h-8 sm:h-10 border-2 border-gray-400 rounded-full flex justify-center">
+        <motion.div
+          className="w-1 h-3 bg-yellow-400 rounded-full mt-2"
+          animate={{ y: [0, 16, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+    </motion.div>
+  </motion.div>
+</section>
 
       {/* About Me Section */}
       <AnimatedSection className="py-20 bg-white text-black">
@@ -595,78 +608,24 @@ const Portfolio = () => {
         </div>
       </AnimatedSection>
 
-          <GallerySection/>
+      {/* Videos section */}
+       <div > 
+        <VideoGallery/>
+        </div>
+
+        {/* Gallery */} 
+        <div > 
+
+         <GallerySection/>
+
+        </div>
+
+
 
       {/* Testimonials Section */}
-      <AnimatedSection className="py-20 bg-gray-900">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
-            <motion.h3 
-              className="text-yellow-400 text-sm font-bold tracking-wider uppercase mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              Testimonials
-            </motion.h3>
-            
-            <motion.h2 
-              className="text-4xl lg:text-5xl font-bold mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              Client Words
-            </motion.h2>
-          </div>
 
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              key={currentTestimonial}
-              className="text-center p-8 bg-white bg-opacity-5 rounded-2xl backdrop-blur-sm border border-white border-opacity-10"
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="flex justify-center mb-6">
-                {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              
-              <blockquote className="text-2xl lg:text-3xl font-light italic mb-8 text-gray-600">
-                &quot;{testimonials[currentTestimonial].quote}&quot;
-              </blockquote>
-              
-              <div className="text-center">
-                <h4 className="text-xl font-bold text-yellow-400">
-                  {testimonials[currentTestimonial].client}
-                </h4>
-                <p className="text-gray-400">
-                  {testimonials[currentTestimonial].company}
-                </p>
-              </div>
-            </motion.div>
-
-            <div className="flex justify-center space-x-4 mt-8">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentTestimonial
-                      ? 'bg-yellow-400 scale-125'
-                      : 'bg-white bg-opacity-30 hover:bg-opacity-50'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </AnimatedSection>
-
+      <Testimonials/>
+     
       {/* Contact Section */}
       <AnimatedSection className="py-20 bg-black">
         <div className="container mx-auto px-6 lg:px-12">

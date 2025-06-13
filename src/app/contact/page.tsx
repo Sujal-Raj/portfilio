@@ -1,112 +1,495 @@
-// app/contact/page.tsx
+'use client';
 
-"use client";
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Mail, 
+  Send,
+  User,
+  MessageSquare,
+  Check,
+  AlertCircle,
+  Github,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Phone,
+  MapPin,
+  Sparkles,
+  Zap,
+  Heart
+} from 'lucide-react';
 
-import { useState } from "react";
-// import Image from "next/image";
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
 
-export default function ContactPage() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+interface SocialLink {
+  name: string;
+  icon: React.ReactNode;
+  url: string;
+  color: string;
+}
+
+const socialLinks: SocialLink[] = [
+  {
+    name: 'GitHub',
+    icon: <Github className="w-6 h-6" />,
+    url: 'https://github.com/yourusername',
+    color: 'hover:text-gray-300'
+  },
+  {
+    name: 'LinkedIn',
+    icon: <Linkedin className="w-6 h-6" />,
+    url: 'https://linkedin.com/in/yourusername',
+    color: 'hover:text-blue-400'
+  },
+  {
+    name: 'Twitter',
+    icon: <Twitter className="w-6 h-6" />,
+    url: 'https://twitter.com/yourusername',
+    color: 'hover:text-blue-400'
+  },
+  {
+    name: 'Instagram',
+    icon: <Instagram className="w-6 h-6" />,
+    url: 'https://instagram.com/yourusername',
+    color: 'hover:text-pink-400'
+  }
+];
+
+const ContactSection: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (rect) {
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitted", form);
-    // Hook into email API or backend here
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // EmailJS integration would go here
+      // await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData, 'YOUR_PUBLIC_KEY');
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+      setErrors({});
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      
+    } catch (error) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   return (
-    <div className="relative min-h-screen text-white flex items-center justify-center px-6 py-20">
-      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 bg-black/30 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden">
+    <section 
+      ref={sectionRef}
+      className="min-h-screen py-24 px-6 bg-black relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Dynamic Background Effects */}
+      <div className="absolute inset-0">
+        {/* Animated Mesh Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 via-transparent to-amber-400/5"></div>
+        
+        {/* Floating Orbs */}
+        <div className="absolute top-32 left-32 w-96 h-96 bg-gradient-to-r from-yellow-400/10 to-amber-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-32 right-32 w-72 h-72 bg-gradient-to-r from-amber-400/8 to-yellow-500/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }}></div>
+        
+        {/* Interactive Mouse Glow */}
+        <div 
+          className="absolute w-80 h-80 bg-gradient-to-r from-yellow-400/8 to-amber-400/8 rounded-full blur-3xl pointer-events-none transition-all duration-1000 ease-out"
+          style={{
+            left: mousePosition.x - 160,
+            top: mousePosition.y - 160,
+          }}
+        ></div>
 
-        {/* LEFT SIDE – Image / Visual */}
-        <div className="relative flex items-center justify-center p-6 bg-gradient-to-br from-yellow-400/10 to-yellow-500/10 ">
-          {/* <Image
-            src="/contact-mockup.svg" // Replace with your own
-            alt="Contact Visual"
-            width={500}
-            height={500}
-            className="object-contain drop-shadow-2xl"
-          /> */}
-           <h2 className="mt-6 text-2xl font-semibold text-gray-800">Let&lsquo;s Get Connected</h2>
-  <p className="mt-2 text-center text-gray-600 max-w-md">
-    We&lsquo;d love to hear from you! Reach out with any questions, feedback, or just to say hello.
-  </p>
+        {/* Geometric Patterns */}
+        <div className="absolute top-20 right-20 w-6 h-6 border-2 border-yellow-400/20 rotate-45 animate-spin" style={{ animationDuration: '25s' }}></div>
+        <div className="absolute bottom-20 left-20 w-4 h-4 bg-yellow-400/30 animate-bounce" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 right-1/3 w-3 h-3 bg-amber-400/40 animate-ping" style={{ animationDelay: '4s' }}></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className={`text-center mb-20 transition-all duration-1200 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+        }`}>
+          <div className="inline-block relative">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Heart className="w-5 h-5 text-yellow-400 animate-pulse" />
+              <span className="text-yellow-400 font-bold text-sm tracking-[0.3em] uppercase">
+                Let&apos;s Connect
+              </span>
+              <Heart className="w-5 h-5 text-yellow-400 animate-pulse" style={{ animationDelay: '0.5s' }} />
+            </div>
+            
+            <h2 className="text-6xl md:text-8xl font-black text-white mb-8 relative tracking-tight">
+              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                Get In
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent animate-pulse">
+                Touch
+              </span>
+              
+              {/* Decorative Elements */}
+              <div className="absolute -top-6 -right-6 w-10 h-10 border-2 border-yellow-400/50 rotate-45 animate-spin" style={{ animationDuration: '20s' }}></div>
+              <Sparkles className="absolute -bottom-4 -left-4 w-8 h-8 text-yellow-400/70 animate-bounce" style={{ animationDelay: '1s' }} />
+            </h2>
+          </div>
+          
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
+            Ready to create something 
+            <span className="text-yellow-400 font-semibold"> extraordinary</span>? 
+            Let&apos;s bring your vision to life and make magic happen together.
+          </p>
         </div>
 
-        {/* RIGHT SIDE – Form */}
-        <div className="p-10">
-          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Let&lsquo;s Connect</h2>
-          <p className="text-gray-400 mb-10">Have a project or want to say hi? Drop a message below.</p>
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Contact Form */}
+          <div className={`transition-all duration-1000 delay-300 ${
+            isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
+          }`}>
+            <div className="relative bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm border border-gray-800/50 p-8 md:p-12 rounded-2xl">
+              {/* Form Glow Effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-yellow-400/5 via-transparent to-amber-400/5 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <div className="relative z-10">
+                <h3 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                  <Zap className="w-8 h-8 text-yellow-400" />
+                  Send a Message
+                </h3>
+                <p className="text-gray-400 mb-8">
+                  Fill out the form below and I&apos;ll get back to you within 24 hours!
+                </p>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Name */}
-            <div className="relative">
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                required
-                className="peer w-full border border-gray-700 bg-black/50 px-4 pt-6 pb-2 rounded-md text-white placeholder-transparent focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
-                placeholder="Name"
-              />
-              <label className="absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-yellow-400">
-                Name
-              </label>
-            </div>
+                {/* Success/Error Messages */}
+                {submitStatus === 'success' && (
+                  <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center gap-3 animate-pulse">
+                    <Check className="w-5 h-5 text-green-400" />
+                    <span className="text-green-400 font-medium">Message sent successfully! I&apos;ll be in touch soon.</span>
+                  </div>
+                )}
 
-            {/* Email */}
-            <div className="relative">
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                required
-                className="peer w-full border border-gray-700 bg-black/50 px-4 pt-6 pb-2 rounded-md text-white placeholder-transparent focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
-                placeholder="Email"
-              />
-              <label className="absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-yellow-400">
-                Email
-              </label>
-            </div>
+                {submitStatus === 'error' && (
+                  <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg flex items-center gap-3">
+                    <AlertCircle className="w-5 h-5 text-red-400" />
+                    <span className="text-red-400 font-medium">Something went wrong. Please try again.</span>
+                  </div>
+                )}
 
-            {/* Message */}
-            <div className="relative">
-              <textarea
-                name="message"
-                rows={5}
-                value={form.message}
-                onChange={handleChange}
-                required
-                className="peer w-full border border-gray-700 bg-black/50 px-4 pt-6 pb-2 rounded-md text-white placeholder-transparent focus:outline-none focus:ring-2 focus:ring-yellow-400 transition resize-none"
-                placeholder="Message"
-              />
-              <label className="absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-yellow-400">
-                Message
-              </label>
-            </div>
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                  {/* Name Field */}
+                  <div className="relative">
+                    <label className="block text-gray-300 font-medium mb-2 flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      onFocus={() => setFocusedField('name')}
+                      onBlur={() => setFocusedField(null)}
+                      className={`w-full px-4 py-4 bg-gray-900/50 border-2 rounded-lg text-white placeholder-gray-500 transition-all duration-300 focus:outline-none ${
+                        focusedField === 'name' 
+                          ? 'border-yellow-400 shadow-lg shadow-yellow-400/20 bg-gray-900/70' 
+                          : errors.name 
+                            ? 'border-red-500' 
+                            : 'border-gray-700 hover:border-gray-600'
+                      }`}
+                      placeholder="John Doe"
+                    />
+                    {errors.name && (
+                      <p className="mt-2 text-red-400 text-sm flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.name}
+                      </p>
+                    )}
+                    
+                    {/* Focus Glow Effect */}
+                    {focusedField === 'name' && (
+                      <div className="absolute inset-0 rounded-lg bg-yellow-400/5 blur-sm pointer-events-none"></div>
+                    )}
+                  </div>
 
-            {/* Submit */}
-            <div>
-              <button
-                type="submit"
-                className="w-full py-3 px-6 bg-yellow-400 text-black font-semibold rounded-md hover:bg-yellow-300 transition-all duration-300"
-              >
-                Send Message
-              </button>
+                  {/* Email Field */}
+                  <div className="relative">
+                    <label className="block text-gray-300 font-medium mb-2 flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      onFocus={() => setFocusedField('email')}
+                      onBlur={() => setFocusedField(null)}
+                      className={`w-full px-4 py-4 bg-gray-900/50 border-2 rounded-lg text-white placeholder-gray-500 transition-all duration-300 focus:outline-none ${
+                        focusedField === 'email' 
+                          ? 'border-yellow-400 shadow-lg shadow-yellow-400/20 bg-gray-900/70' 
+                          : errors.email 
+                            ? 'border-red-500' 
+                            : 'border-gray-700 hover:border-gray-600'
+                      }`}
+                      placeholder="john@example.com"
+                    />
+                    {errors.email && (
+                      <p className="mt-2 text-red-400 text-sm flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.email}
+                      </p>
+                    )}
+                    
+                    {focusedField === 'email' && (
+                      <div className="absolute inset-0 rounded-lg bg-yellow-400/5 blur-sm pointer-events-none"></div>
+                    )}
+                  </div>
+
+                  {/* Message Field */}
+                  <div className="relative">
+                    <label className="block text-gray-300 font-medium mb-2 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4" />
+                      Your Message
+                    </label>
+                    <textarea
+                      name="message"
+                      rows={6}
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      onFocus={() => setFocusedField('message')}
+                      onBlur={() => setFocusedField(null)}
+                      className={`w-full px-4 py-4 bg-gray-900/50 border-2 rounded-lg text-white placeholder-gray-500 transition-all duration-300 focus:outline-none resize-none ${
+                        focusedField === 'message' 
+                          ? 'border-yellow-400 shadow-lg shadow-yellow-400/20 bg-gray-900/70' 
+                          : errors.message 
+                            ? 'border-red-500' 
+                            : 'border-gray-700 hover:border-gray-600'
+                      }`}
+                      placeholder="Tell me about your project, ideas, or just say hello!"
+                    />
+                    {errors.message && (
+                      <p className="mt-2 text-red-400 text-sm flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.message}
+                      </p>
+                    )}
+                    
+                    {focusedField === 'message' && (
+                      <div className="absolute inset-0 rounded-lg bg-yellow-400/5 blur-sm pointer-events-none"></div>
+                    )}
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="group relative w-full overflow-hidden bg-gradient-to-r from-yellow-400 to-amber-400 text-black px-8 py-4 font-bold text-lg transition-all duration-500 hover:shadow-2xl hover:shadow-yellow-400/25 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-3">
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                          Sending Message...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                          Send Message
+                        </>
+                      )}
+                    </span>
+                    
+                    {/* Button Effects */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute -top-2 -left-2 w-4 h-4 bg-white/30 rotate-45 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-150"></div>
+                  </button>
+                </form>
+              </div>
             </div>
-          </form>
+          </div>
+
+          {/* Contact Info */}
+          <div className={`transition-all duration-1000 delay-500 ${
+            isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
+          }`}>
+            <div className="space-y-12">
+              {/* Direct Contact */}
+              <div className="relative bg-gradient-to-br from-gray-900/30 to-black/30 backdrop-blur-sm border border-gray-800/30 p-8 rounded-2xl">
+                <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                  <Mail className="w-8 h-8 text-yellow-400" />
+                  Direct Contact
+                </h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 p-4 bg-gray-900/30 rounded-lg hover:bg-gray-900/50 transition-colors duration-300">
+                    <Mail className="w-6 h-6 text-yellow-400" />
+                    <div>
+                      <p className="text-gray-400 text-sm">Email</p>
+                      <a href="mailto:hello@yourdesign.com" className="text-white hover:text-yellow-400 transition-colors duration-300 font-medium">
+                        hello@yourdesign.com
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 p-4 bg-gray-900/30 rounded-lg hover:bg-gray-900/50 transition-colors duration-300">
+                    <Phone className="w-6 h-6 text-yellow-400" />
+                    <div>
+                      <p className="text-gray-400 text-sm">Phone</p>
+                      <a href="tel:+1234567890" className="text-white hover:text-yellow-400 transition-colors duration-300 font-medium">
+                        +1 (234) 567-8900
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 p-4 bg-gray-900/30 rounded-lg hover:bg-gray-900/50 transition-colors duration-300">
+                    <MapPin className="w-6 h-6 text-yellow-400" />
+                    <div>
+                      <p className="text-gray-400 text-sm">Location</p>
+                      <p className="text-white font-medium">New York, NY</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social Media */}
+              <div className="relative bg-gradient-to-br from-gray-900/30 to-black/30 backdrop-blur-sm border border-gray-800/30 p-8 rounded-2xl">
+                <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                  <Sparkles className="w-8 h-8 text-yellow-400" />
+                  Follow Me
+                </h3>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {socialLinks.map((social, index) => (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`group flex items-center gap-3 p-4 bg-gray-900/30 rounded-lg hover:bg-gray-900/50 transition-all duration-300 hover:scale-105 hover:shadow-lg ${social.color}`}
+                    >
+                      <div className="relative">
+                        {social.icon}
+                        <div className="absolute inset-0 bg-yellow-400/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </div>
+                      <span className="text-white group-hover:text-yellow-400 transition-colors duration-300 font-medium">
+                        {social.name}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Availability Status */}
+              <div className="relative bg-gradient-to-r from-green-900/20 to-emerald-900/20 backdrop-blur-sm border border-green-800/30 p-6 rounded-2xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-green-400 font-bold">Available for Projects</span>
+                </div>
+                <p className="text-gray-300 text-sm">
+                  Currently accepting new projects for Q2 2025. Let&apos;s create something amazing together!
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default ContactSection;

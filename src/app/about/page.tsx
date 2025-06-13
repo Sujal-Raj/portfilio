@@ -9,6 +9,12 @@ const AboutSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isPlaying, setIsPlaying] = useState(true);
 
+
+  //  useEffect(() => {
+  //  setMousePosition({ x: 0, y: 0 }); // fixes hydration mismatch
+  // }, []);
+  
+
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);

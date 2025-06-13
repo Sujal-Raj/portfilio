@@ -29,11 +29,18 @@ const GallerySection = () => {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+  if (swiperRef.current) {
+    console.log("Swiper is initialized:", swiperRef.current);
+  }
+}, [galleryImages]);
+
+
   const fetchGallery = async () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/gallery");
-      // console.log(response.data.gallery);
+      console.log(response.data.gallery);
       
       // Since your console shows the data is directly an array, not wrapped in gallery property
       if (response.data.gallery && Array.isArray(response.data.gallery)) {
@@ -117,7 +124,10 @@ const GallerySection = () => {
               centeredSlides={true}
               slidesPerView="auto"
               loop={true}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
+             onSwiper={(swiperInstance) => {
+  swiperRef.current = swiperInstance;
+}}
+
               coverflowEffect={{
                 rotate: 20,
                 stretch: 0,
