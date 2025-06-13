@@ -1,4 +1,4 @@
-import Sidebar from '@/app/components/Sidebar';
+
 import React from 'react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

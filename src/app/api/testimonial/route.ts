@@ -1,6 +1,6 @@
 import { connectToDatabse } from "@/app/dbConfig/dbconfig";
 import cloudinary from "@/app/lib/config";
-import { NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import Testimonial from "@/app/models/testimonialModel";
 
 // Make sure this is in `app/api/testimonial/route.ts`
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       stream.end(buffer);
     });
 
-    const { secure_url } = uploadResult as any;
+    const { secure_url } = uploadResult as { secure_url: string };
 
     // Save to MongoDB
     const newTestimonial = await Testimonial.create({
@@ -54,5 +54,25 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json({ message: "Error posting testimonial" }, { status: 500 });
+  }
+}
+
+
+
+export async function GET(){
+  try {
+    await connectToDatabse();
+    const response = await Testimonial.find();
+
+    return NextResponse.json({
+      response
+    },{status:200})
+    
+  } catch (error:unknown) {
+      console.log(error)
+      return NextResponse.json({
+        message:"Error fetching testimonial"
+      },{status:500})
+
   }
 }

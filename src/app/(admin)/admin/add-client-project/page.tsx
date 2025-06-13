@@ -1,7 +1,7 @@
 'use client';
 import Sidebar from '@/app/components/Sidebar';
 import React, { useState } from 'react';
-import { Plus, X, Upload, Save, Trash2 } from 'lucide-react';
+import { Plus, Upload, Save, Trash2 } from 'lucide-react';
 
 function AddClientForm() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -27,13 +27,13 @@ function AddClientForm() {
     setSidebarOpen(!sidebarOpen);
   };
 
-interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> {}
+// interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> {}
 
-interface HandleInputChangeFn {
-    (e: InputChangeEvent): void;
-}
+// interface HandleInputChangeFn {
+    // (e: InputChangeEvent): void;
+// }
 
-const handleInputChange: HandleInputChangeFn = (e) => {
+const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
         ...prev,
@@ -90,15 +90,15 @@ const handleImageUpload: HandleImageUploadFn = (projectId, file) => {
     );
 };
 
-interface SubmitEvent extends React.FormEvent<HTMLFormElement> {}
+// interface SubmitEvent extends React.FormEvent<HTMLFormElement> {}
 
-interface SubmitProjectData {
-    formData: typeof formData;
-    projects: typeof projects;
-    submitData: FormData;
-}
+// interface SubmitProjectData {
+//     formData: typeof formData;
+//     projects: typeof projects;
+//     submitData: FormData;
+// }
 
-const handleSubmit = async (e: SubmitEvent): Promise<void> => {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -296,7 +296,7 @@ const handleSubmit = async (e: SubmitEvent): Promise<void> => {
                         No projects added yet
                       </p>
                       <p className="text-sm text-gray-500">
-                        Click "Add Project" to get started
+                        Click &quot;Add Project&quot; to get started
                       </p>
                     </div>
                   ) : (
