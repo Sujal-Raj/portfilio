@@ -123,14 +123,14 @@ const ClientPage: React.FC = () => {
             <p className="text-yellow-400 text-lg font-medium mb-4">
               {client.company}
             </p>
-            <p className="text-gray-300 mb-6 italic">"{client.workDid}"</p>
+            <p className="text-gray-300 mb-6 italic">&quot;{client.workDid}&quot;</p>
 
             <div className="bg-black p-6 rounded-lg border-l-4 border-yellow-400">
               <h3 className="text-xl font-semibold text-yellow-400 mb-3">
                 Testimonial
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                "{client.testimonial}"
+                &quot;{client.testimonial}&quot;
               </p>
             </div>
           </div>
