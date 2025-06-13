@@ -1,167 +1,115 @@
-'use client';
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
+import { Play } from "lucide-react";
 
-interface MediaItem {
-  id: number;
-  type: 'image' | 'video';
-  src: string;
-  alt: string;
+interface Project {
+  thumbnailURL: string;
+  youtubeLink: string;
+  instagramLink: string;
 }
 
-interface ClientDetails {
+interface ClientProject {
   name: string;
-  role: string;
   company: string;
-  email: string;
-  phone: string;
-  location: string;
-  description: string;
-  services: string[];
+  workDid: string;
   testimonial: string;
+  projects: Project[];
 }
-
-const clientData: ClientDetails = {
-  name: 'Sarah Johnson',
-  role: 'Creative Director',
-  company: 'Design Studio Inc.',
-  email: 'sarah@designstudio.com',
-  phone: '+1 (555) 123-4567',
-  location: 'New York, NY',
-  description:
-    'Award-winning creative director with over 10 years of experience in digital design and brand strategy.',
-  services: ['Brand Identity', 'Web Design', 'Digital Marketing', 'UI/UX Design'],
-  testimonial:
-    'Working with this team transformed our brand presence completely. The attention to detail and creative vision exceeded all expectations.',
-};
 
 const ClientPage: React.FC = () => {
-  const [activeMedia, setActiveMedia] = useState<number>(0);
-  const [initials, setInitials] = useState<string>(''); // NEW STATE FOR INITIALS
-
-  const mediaItems: MediaItem[] = [
-    { id: 1, type: 'image', src: '/api/placeholder/600/400', alt: 'Project 1' },
-    { id: 2, type: 'image', src: '/api/placeholder/600/400', alt: 'Project 2' },
-    { id: 3, type: 'video', src: '/api/placeholder/600/400', alt: 'Demo Video' },
-    { id: 4, type: 'image', src: '/api/placeholder/600/400', alt: 'Project 3' },
-  ];
+  const [client, setClient] = useState<ClientProject | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   useEffect(() => {
-    // Compute initials on client side to avoid mismatch
-    const nameInitials = clientData.name
-      .split(' ')
-      .map((n) => n[0])
-      .join('');
-    setInitials(nameInitials);
+    async function fetchClientData() {
+      try {
+        const res = await fetch("/api/clientProjects/latest"); // Adjust to your GET route
+        const json = await res.json();
+        if (res.ok) {
+          setClient(json.data);
+        } else {
+          console.error("Fetch error:", json.message);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchClientData();
   }, []);
 
-  return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="flex flex-col lg:flex-row">
-        {/* Left Side - Media Gallery */}
-        <div className="lg:w-1/2 p-6 lg:p-8">
-          <div className="sticky top-8">
-            <h1 className="text-3xl lg:text-4xl font-bold text-yellow-400 mb-6">Portfolio</h1>
+  if (!client) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <p>Loading client project...</p>
+      </div>
+    );
+  }
 
-            {/* Main Media Display */}
+  const setActive = (idx: number) => setActiveIndex(idx);
+
+  return (
+    <div className="min-h-screen bg-black text-white px-4 sm:px-6 md:px-10 py-10 lg:py-0 lg:flex lg:items-center">
+      {/* Left: Projects Carousel */}
+      <div className="lg:w-1/2 mb-10 lg:mb-0">
+        <h1 className="text-3xl lg:text-4xl font-bold text-yellow-400 mb-6">
+          Projects by {client.name}
+        </h1>
+        {client.projects.length > 0 && (
+          <div>
             <div className="bg-gray-900 rounded-lg overflow-hidden mb-6 border-2 border-yellow-400">
-              <div className="aspect-video bg-gray-800 flex items-center justify-center">
-                <div className="text-yellow-400 text-lg">
-                  {mediaItems[activeMedia].type === 'image' ? '📸' : '🎥'}{' '}
-                  {mediaItems[activeMedia].alt}
-                </div>
+              <div className="aspect-[16/9] relative">
+                <img
+                  src={client.projects[activeIndex].thumbnailURL}
+                  alt={`Project thumbnail ${activeIndex + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                <a
+                  href={client.projects[activeIndex].youtubeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black/40 transition-opacity"
+                >
+                  <Play className="w-12 h-12 text-yellow-400" />
+                </a>
               </div>
             </div>
 
-            {/* Media Thumbnails */}
-            <div className="grid grid-cols-4 gap-3">
-              {mediaItems.map((item, index) => (
+            <div className="grid grid-cols-3 gap-3">
+              {client.projects.map((proj, idx) => (
                 <button
-                  key={item.id}
-                  onClick={() => setActiveMedia(index)}
+                  key={idx}
+                  onClick={() => setActive(idx)}
                   className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                    activeMedia === index
-                      ? 'border-yellow-400 ring-2 ring-yellow-400 ring-opacity-50'
-                      : 'border-gray-600 hover:border-yellow-400'
+                    activeIndex === idx
+                      ? "border-yellow-400 ring-2 ring-yellow-400/50"
+                      : "border-gray-600 hover:border-yellow-400"
                   }`}
                 >
-                  <div className="w-full h-full bg-gray-800 flex items-center justify-center text-yellow-400">
-                    {item.type === 'image' ? '📸' : '🎥'}
-                  </div>
+                  <img
+                    src={proj.thumbnailURL}
+                    alt={`Thumb ${idx + 1}`}
+                    className="w-full h-full object-cover"
+                  />
                 </button>
               ))}
             </div>
           </div>
-        </div>
+        )}
+      </div>
 
-        {/* Right Side - Client Details */}
-        <div className="lg:w-1/2 bg-gray-900 p-6 lg:p-8 mt-20 lg:mt-0">
-          <div className="max-w-lg">
-            {/* Client Header */}
-            <div className="mb-8">
-              <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center mb-4">
-                <span className="text-black text-2xl font-bold">{initials}</span>
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-2">{clientData.name}</h2>
-              <p className="text-yellow-400 text-lg font-medium">{clientData.role}</p>
-              <p className="text-gray-400">{clientData.company}</p>
-            </div>
+      {/* Right: Client Info */}
+      <div className="lg:w-1/2 bg-gray-900 p-6 lg:p-8 rounded-lg">
+        <h2 className="text-3xl font-bold text-white mb-2">{client.name}</h2>
+        <p className="text-yellow-400 text-lg font-medium mb-4">{client.company}</p>
+        <p className="text-gray-300 mb-6 italic">"{client.workDid}"</p>
 
-            {/* Contact Info */}
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-yellow-400 mb-4">Contact</h3>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <span className="text-yellow-400">📧</span>
-                  <span className="text-gray-300">{clientData.email}</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <span className="text-yellow-400">📱</span>
-                  <span className="text-gray-300">{clientData.phone}</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <span className="text-yellow-400">📍</span>
-                  <span className="text-gray-300">{clientData.location}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* About */}
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-yellow-400 mb-4">About</h3>
-              <p className="text-gray-300 leading-relaxed">{clientData.description}</p>
-            </div>
-
-            {/* Services */}
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-yellow-400 mb-4">Services</h3>
-              <div className="flex flex-wrap gap-2">
-                {clientData.services.map((service, index) => (
-                  <span
-                    key={index}
-                    className="bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-medium"
-                  >
-                    {service}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Testimonial */}
-            <div className="bg-black p-6 rounded-lg border-l-4 border-yellow-400">
-              <h3 className="text-xl font-semibold text-yellow-400 mb-3">Testimonial</h3>
-              <p className="text-gray-300 italic leading-relaxed">"{clientData.testimonial}"</p>
-            </div>
-
-            {/* Buttons */}
-            <div className="mt-8 flex space-x-4">
-              <button className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition-colors">
-                Get In Touch
-              </button>
-              <button className="border-2 border-yellow-400 text-yellow-400 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-400 hover:text-black transition-colors">
-                View More Work
-              </button>
-            </div>
-          </div>
+        <div className="bg-black p-6 rounded-lg border-l-4 border-yellow-400">
+          <h3 className="text-xl font-semibold text-yellow-400 mb-3">
+            Testimonial
+          </h3>
+          <p className="text-gray-300 leading-relaxed">
+            "{client.testimonial}"
+          </p>
         </div>
       </div>
     </div>
