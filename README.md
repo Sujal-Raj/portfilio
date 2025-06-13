@@ -49,7 +49,7 @@ git clone [repository-url]
 
 ```bash
 npm install
-
+```
 
 MONGO_URI=your_mongodb_uri
 CLOUDINARY_CLOUD_NAME=your_cloudinary_name
@@ -60,10 +60,10 @@ ADMIN_PASS=your_admin_password
 
 ```bash
 npm run dev
+```
 
-
-Project Structure
-
+##Project Structure
+```bash
 src/
 ├── app/
 │   ├── (admin)/        # Admin dashboard routes
@@ -74,15 +74,15 @@ src/
 │   └── dbConfig/      # Database configuration
 public/                # Static assets
 
+```
 
-
-Deployment
+##Deployment
 The project is configured for deployment on Vercel. Simply connect your repository to Vercel and deploy.
 
-Contributing
+##Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-License
+##License
 MIT
 
 
