@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         uploadStream.end(buffer);
       });
 
-      const cloudinaryURL = (uploadResult as any).secure_url;
+      const cloudinaryURL = (uploadResult as { secure_url: string }).secure_url;
 
       uploadedProjects.push({
         thumbnailURL: cloudinaryURL,
@@ -77,14 +77,33 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error saving project:", error);
     return NextResponse.json(
       {
         message: "Failed to add client project",
-        error: error.message || "Unknown error",
+        error: typeof error === "object" && error !== null && "message" in error ? (error as { message: string }).message : "Unknown error",
       },
       { status: 500 }
     );
+  }
+}
+
+
+export async function GET(){
+  try {
+    await connectToDatabse();
+    const response = await ClientProject.find();
+
+    return NextResponse.json({
+      message:"Client Project fetched",
+      data:response
+    },{status:200})
+    
+  } catch (error:unknown) {
+    console.log(error)
+    return NextResponse.json({
+      message:"Error Fetching Client"
+    },{status:500})
   }
 }

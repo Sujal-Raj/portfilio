@@ -17,6 +17,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: sidebarValues) => {
     { icon: Image, label: 'Add to gallery', href: '/admin/dashboard' },
     { icon: Upload, label: 'Upload blog', href: '/admin/blog' },
     { icon: Upload, label: 'Add Client Project', href: '/admin/add-client-project' },
+    { icon: Upload, label: 'Add Testimonial', href: '/admin/testimonial' },
   ];
 
   const handleLogout = async () => {
@@ -47,7 +48,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: sidebarValues) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-full w-64 bg-black border-r border-yellow-400 transform transition-transform duration-300 ease-in-out z-50 lg:relative lg:translate-x-0 pt-20 ${
+        className={`fixed left-0 top-0 h-screen w-64 bg-black border-r border-yellow-400 transform transition-transform duration-300 ease-in-out z-50 lg:relative lg:translate-x-0 pt-20 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

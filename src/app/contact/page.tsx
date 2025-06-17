@@ -153,8 +153,8 @@ const ContactSection: React.FC = () => {
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitStatus('idle'), 5000);
       
-    } catch (error) {
-      setSubmitStatus('error');
+    } catch (error:unknown) {
+      setSubmitStatus(error instanceof Error ? 'error' : 'error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
       setIsSubmitting(false);
@@ -454,7 +454,7 @@ const ContactSection: React.FC = () => {
                 </h3>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  {socialLinks.map((social, index) => (
+                  {socialLinks.map((social) => (
                     <a
                       key={social.name}
                       href={social.url}

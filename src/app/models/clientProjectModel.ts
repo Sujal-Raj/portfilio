@@ -35,6 +35,6 @@ const clientProjectSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-const ClientProject = model("clientProject",clientProjectSchema);
+const ClientProject = mongoose.models.clientProject ||model("clientProject",clientProjectSchema);
 
 export default ClientProject;

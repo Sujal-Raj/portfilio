@@ -122,7 +122,7 @@ const AdminDashboard = () => {
         </header>
 
         {/* Dashboard Content */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 overflow-auto bg-black">
           <div className="max-w-4xl mx-auto">
             {/* Stats Cards */}
             {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

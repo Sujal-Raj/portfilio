@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { 
   ChevronRight, 
@@ -17,12 +17,12 @@ import {
   Github,
   Linkedin,
   Twitter,
-  Star,
+  // Star,
   // ChevronLeft,
   // Eye,
   // ExternalLink
 } from 'lucide-react';
-import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
+// import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
 // import Videos from '../components/Videos';
 import VideoGallery from '../components/VideoGallery';
 import Testimonials from '../components/Testimonial';
@@ -32,23 +32,23 @@ import {  TypewriterEffectSmooth } from '../components/ui/typewriter-effect';
 // import Gallery from '../models/galleryModel';;
 
 const Portfolio = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
+  // const [activeFilter, setActiveFilter] = useState('All');
   // const [currentTestimonial, setCurrentTestimonial] = useState(0);
- const words = [
-    {
-      text: "Bring",
-      className: "text-white dark:text-white",
-    },
-    {
-      text: "Ideas",
-      className: "text-white dark:text-white",
-    },
-    {
-      text: "to Life",
-       className: "text-yellow-400 dark:text-yellow-400",
-    },
+//  const words = [
+//     {
+//       text: "Bring",
+//       className: "text-white dark:text-white",
+//     },
+//     {
+//       text: "Ideas",
+//       className: "text-white dark:text-white",
+//     },
+//     {
+//       text: "to Life",
+//        className: "text-yellow-400 dark:text-yellow-400",
+//     },
    
-  ];
+//   ];
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
