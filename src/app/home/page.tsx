@@ -28,6 +28,7 @@ import VideoGallery from '../components/VideoGallery';
 import Testimonials from '../components/Testimonial';
 import MyWork from '../components/Work';
 import GallerySection from '../components/Gallery';
+import {  TypewriterEffectSmooth } from '../components/ui/typewriter-effect';
 // import Gallery from '../models/galleryModel';;
 
 const Portfolio = () => {
@@ -95,36 +96,6 @@ const Portfolio = () => {
     }
   };
 
-  // Sample data
-  // const projects = [
-  //   { id: 1, title: 'Brand Identity Design', category: 'Branding', tags: ['Logo', 'Brand Guidelines', 'Stationery'] },
-  //   { id: 2, title: 'E-commerce Website', category: 'Web', tags: ['UI/UX', 'Responsive', 'E-commerce'] },
-  //   { id: 3, title: 'Event Poster Series', category: 'Posters', tags: ['Print Design', 'Typography', 'Events'] },
-  //   { id: 4, title: 'Mobile App Interface', category: 'UI-UX', tags: ['Mobile', 'UI Design', 'Prototyping'] },
-  //   { id: 5, title: 'Corporate Branding', category: 'Branding', tags: ['Corporate', 'Identity', 'Guidelines'] },
-  //   { id: 6, title: 'Restaurant Menu Design', category: 'Posters', tags: ['Menu', 'Print', 'Food & Beverage'] }
-  // ];
-
-  // const testimonials = [
-  //   {
-  //     quote: "Exceptional work! The brand identity they created perfectly captured our vision and elevated our business.",
-  //     client: "Sarah Johnson",
-  //     company: "Tech Innovations",
-  //     rating: 5
-  //   },
-  //   {
-  //     quote: "Professional, creative, and delivered on time. I highly recommend their design services.",
-  //     client: "Mike Chen",
-  //     company: "StartUp Co.",
-  //     rating: 5
-  //   },
-  //   {
-  //     quote: "Amazing attention to detail and great communication throughout the project.",
-  //     client: "Emma Davis",
-  //     company: "Creative Agency",
-  //     rating: 5
-  //   }
-  // ];
 
   const services = [
     {
@@ -180,96 +151,50 @@ const Portfolio = () => {
   return (
     <div className="bg-black text-white">
       {/* Hero Section */}
-      <section className="relative min-h-screen overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 sm:mt-10">
-          <motion.div
-            className="absolute top-20 left-20 w-96 h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-xl opacity-20"
-            animate={{
-              scale: [1, 1.2, 1],
-              x: [0, 50, 0],
-              y: [0, -30, 0],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div
-            className="absolute top-40 right-20 w-80 h-80 bg-white rounded-full mix-blend-multiply filter blur-xl opacity-10"
-            animate={{
-              scale: [1, 1.3, 1],
-              x: [0, -30, 0],
-              y: [0, 40, 0],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
-            }}
-          />
-          <motion.div
-            className="absolute bottom-20 left-1/3 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-15"
-            animate={{
-              scale: [1, 1.1, 1],
-              x: [0, 20, 0],
-              y: [0, -20, 0],
-            }}
-            transition={{
-              duration: 12,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 4
-            }}
-          />
+<section className="relative min-h-screen overflow-hidden bg-black">
+  {/* Animated Background */}
+  <div className="absolute inset-0 sm:mt-10">
+    <motion.div
+      className="absolute top-20 left-20 w-72 sm:w-96 h-72 sm:h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+      animate={{ scale: [1, 1.2, 1], x: [0, 50, 0], y: [0, -30, 0] }}
+      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+    />
+    <motion.div
+      className="absolute top-40 right-20 w-64 sm:w-80 h-64 sm:h-80 bg-white rounded-full mix-blend-multiply filter blur-xl opacity-10"
+      animate={{ scale: [1, 1.3, 1], x: [0, -30, 0], y: [0, 40, 0] }}
+      transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+    />
+    <motion.div
+      className="absolute bottom-20 left-1/3 w-60 sm:w-72 h-60 sm:h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-15"
+      animate={{ scale: [1, 1.1, 1], x: [0, 20, 0], y: [0, -20, 0] }}
+      transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+    />
 
-          <motion.div
-            className="absolute top-1/4 left-10 w-4 h-4 bg-yellow-400 transform rotate-45"
-            variants={floatingVariants}
-            animate="animate"
-          />
-          <motion.div
-            className="absolute top-1/3 right-1/4 w-3 h-3 bg-white rounded-full"
-            variants={floatingVariants}
-            animate="animate"
-            transition={{ delay: 1 }}
-          />
-          <motion.div
-            className="absolute bottom-1/3 right-10 w-5 h-5 bg-yellow-300 transform rotate-12"
-            variants={floatingVariants}
-            animate="animate"
-            transition={{ delay: 2 }}
-          />
-        </div>
+    {/* Floating Elements */}
+    <motion.div className="absolute top-1/4 left-10 w-3 h-3 sm:w-4 sm:h-4 bg-yellow-400 rotate-45" variants={floatingVariants} animate="animate" />
+    <motion.div className="absolute top-1/3 right-1/4 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white rounded-full" variants={floatingVariants} animate="animate" transition={{ delay: 1 }} />
+    <motion.div className="absolute bottom-1/3 right-10 w-4 h-4 sm:w-5 sm:h-5 bg-yellow-300 rotate-12" variants={floatingVariants} animate="animate" transition={{ delay: 2 }} />
+  </div>
 
-       
-  {/* Main Container */}
+  {/* Main Content */}
   <motion.div
-    className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-12 min-h-screen flex items-center"
+    className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 min-h-screen flex items-center"
     variants={containerVariants}
     initial="hidden"
     animate="visible"
   >
-    <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-2 gap-12 items-center">
-      {/* Left Section: Text Content */}
-      <div className="text-white space-y-8 w-full">
+    <div className="w-full flex flex-col-reverse md:grid md:grid-cols-2 gap-12 items-center">
+      
+      {/* Text Section */}
+      <div className="text-white space-y-8 w-full text-center md:text-left">
         <motion.div variants={itemVariants} className="space-y-4">
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight">
-            Bringing
-            <span className="relative inline-block mx-4">
-              <span className="text-yellow-400">Ideas</span>
-              <motion.div
-                className="absolute -bottom-2 left-0 right-0 h-3 bg-yellow-400 opacity-30"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 1, duration: 0.8 }}
-              />
-            </span>
-            to Life
+          <TypewriterEffectSmooth words={words} className="text-yellow-400" />
+            
+          <h1 className="text-2xl sm:text-5xl lg:text-4xl font-bold leading-tight">
+            <span className="text-white"> Creative Designer</span>
           </h1>
-          <div className="flex items-center space-x-4 text-base sm:text-lg">
+           
+          <div className="flex justify-center md:justify-start items-center space-x-4 text-base sm:text-lg">
             <motion.div
               className="w-10 sm:w-12 h-0.5 bg-yellow-400"
               initial={{ scaleX: 0 }}
@@ -282,12 +207,12 @@ const Portfolio = () => {
 
         <motion.p
           variants={itemVariants}
-          className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-lg"
+          className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-md mx-auto md:mx-0"
         >
           Freelance graphic designer crafting compelling visuals that communicate, inspire, and elevate your brand to new heights.
         </motion.p>
 
-        <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
+        <motion.div variants={itemVariants} className="flex flex-wrap gap-3 justify-center md:justify-start">
           {['Brand Identity', 'Web Design', 'Print Design', 'Illustration'].map((skill, index) => (
             <motion.span
               key={skill}
@@ -316,14 +241,10 @@ const Portfolio = () => {
         </motion.div>
       </div>
 
-      {/* Right Section: Image/Visual */}
+      {/* Visual Section */}
       <motion.div variants={itemVariants} className="relative flex justify-center w-full">
-        <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md xl:max-w-lg">
-          <motion.div
-            className="relative w-full aspect-square"
-            variants={pulseVariants}
-            animate="animate"
-          >
+        <div className="relative w-full max-w-[18rem] sm:max-w-sm md:max-w-md xl:max-w-lg">
+          <motion.div className="relative w-full aspect-square" variants={pulseVariants} animate="animate">
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full" />
             <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center overflow-hidden">
               <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
@@ -378,6 +299,7 @@ const Portfolio = () => {
     </motion.div>
   </motion.div>
 </section>
+
 
       {/* About Me Section */}
       <AnimatedSection className="py-20 bg-white text-black">
@@ -778,34 +700,7 @@ const Portfolio = () => {
         </div>
       </AnimatedSection >
 
-      {/* Footer */}
-      {/* <footer className="py-12 bg-gray-900 border-t border-white border-opacity-10">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center justify-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                  <Palette className="w-5 h-5 text-black" />
-                </div>
-                <span className="text-2xl font-bold">Designer</span>
-              </div>
-              <p className="text-gray-400 mb-6">
-                Creating visual experiences that inspire and engage.
-              </p>
-              <div className="flex justify-center space-x-8 text-sm text-gray-500">
-                <span>© 2024 Designer Portfolio</span>
-                <span>•</span>
-                <span>All rights reserved</span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </footer> */}
+    
     </div>
   );
 };

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Play } from "lucide-react";
+import axios from "axios";
 
 interface Project {
   thumbnailURL: string;
@@ -23,17 +24,20 @@ const ClientPage: React.FC = () => {
   useEffect(() => {
     async function fetchClientData() {
       try {
-        const res = await fetch("/api/clientProjects/latest"); // Adjust to your GET route
-        const json = await res.json();
-        if (res.ok) {
-          setClient(json.data);
+        const res = await axios.get("/api/clientproject"); // 👈 should be GET, not POST
+        // console.log("Fetched client data:", res.client);
+
+        if (res.status === 200) {
+          setClient(res.data.data); // { message: "...", data: {...} }
+          console.log("Fetched client data:", res.data.data);
         } else {
-          console.error("Fetch error:", json.message);
+          console.error("Fetch error:", res.statusText);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Axios error:", err);
       }
     }
+
     fetchClientData();
   }, []);
 
@@ -44,8 +48,6 @@ const ClientPage: React.FC = () => {
       </div>
     );
   }
-
-  const setActive = (idx: number) => setActiveIndex(idx);
 
   return (
     <div className="min-h-screen bg-black text-white px-4 sm:px-6 md:px-10 py-10 lg:py-0 lg:flex lg:items-center">
@@ -78,7 +80,7 @@ const ClientPage: React.FC = () => {
               {client.projects.map((proj, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setActive(idx)}
+                  onClick={() => setActiveIndex(idx)}
                   className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 ${
                     activeIndex === idx
                       ? "border-yellow-400 ring-2 ring-yellow-400/50"
@@ -100,7 +102,9 @@ const ClientPage: React.FC = () => {
       {/* Right: Client Info */}
       <div className="lg:w-1/2 bg-gray-900 p-6 lg:p-8 rounded-lg">
         <h2 className="text-3xl font-bold text-white mb-2">{client.name}</h2>
-        <p className="text-yellow-400 text-lg font-medium mb-4">{client.company}</p>
+        <p className="text-yellow-400 text-lg font-medium mb-4">
+          {client.company}
+        </p>
         <p className="text-gray-300 mb-6 italic">"{client.workDid}"</p>
 
         <div className="bg-black p-6 rounded-lg border-l-4 border-yellow-400">

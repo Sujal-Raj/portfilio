@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 interface WorkItem {
   id: number;
@@ -200,6 +202,23 @@ const MyWork: React.FC = () => {
             </div>
           </div>
         </div>
+<div>
+ <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.3, duration: 0.6 }}
+  className="pb-12 pt-4 flex justify-center"
+>
+  <Link
+    href="/clientpage"
+    className="bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold text-sm uppercase tracking-wider hover:bg-yellow-300 transition-all shadow-lg hover:shadow-yellow-400/40"
+  >
+    View All Clients
+  </Link>
+</motion.div>
+</div>
+
+       
 
         {/* Navigation Dots */}
         {/* <div className="flex justify-center pb-8 space-x-2 pt-4">
